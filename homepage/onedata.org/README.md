@@ -40,15 +40,15 @@ they use a mount point from host. To update the homepage or docs, use the
 `./update-homepage.py` script (consult the code or use --help for more).
 
 Update GUI files:
-~~~
+```
 ./update-homepage.py --gui docker.onedata.org/homepage:ID-67e61b7749
 <commit the changes, pull them on the host>
 ./update-homepage.py --deploy   # run on the host
-~~~
+```
 
 Update docs:
-~~~
+```
 ./update-homepage.py --docs docker.onedata.org/onedata-documentation:ID-926790c237
 <commit the changes, pull them on the host>
 ./update-homepage.py --deploy   # run on the host
-~~~
+```

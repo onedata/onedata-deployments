@@ -1,8 +1,4 @@
-# Scripts for deploying onedata.org homepage
-
-This directory contains scripts and docker configs for deploying 
-Onezone @ onezone.onedata.org.
-
+# Scripts for deploying Onezone @ onezone.onedata.org
 
 ## Prerequisites
 
@@ -11,27 +7,30 @@ Prepare a host with the following:
 * docker
 * docker-compose
 * python + pyyaml
-* hostname set to onedata.org
-* static DNS A records pointing to the host's IP for domains onedata.org and www.onedata.org
+* hostname set to onezone.onedata.org
+* static DNS NS records pointing at the host IP for subdomain onezone.onedata.org, e.g.:
+  ```
+  onezone.onedata.org.      120  IN  NS  ns1.onezone.onedata.org
+  ns1.onezone.onedata.org.  120  IN  A   149.156.182.35
+  ```
+  Onezone will handle the requests for the domain using the build-in DNS server,
+  which enables subdomain delegation for subject Oneproviders.
 
 
 ## First deployment
 
-1. Clone this repository and check out the branch "onedata.org"
-2. Navigate to "scenarios/0_0_onedata_org"
-3. Run "./update-homepage.py --deploy" to deploy static GUI / docs files according to "homepage-config.yaml"
-4. Run "./init-letsencrypt.sh", you might want to enable staging mode before (see the beginning of the script)
-5. Verify if the certificates are OK and homepage is served on onedata.org
-6. Run "docker-compose up -d"
+1. Place your auth.config in `data/secret/auth.config` - see [OpenID & SAML] for more
+2. Run `./onezone.sh start` (see [onezone.sh]) or `docker-compose up -d`
+3. Visit https://$HOST_IP:9443 and step through the installation wizard
+4. When prompted for emergency passphrase (1st step), provide the one from `data/secret/emergency-passphrase.txt`
 
 
 ## Maintaining the deployment
 
-The maintenance is quite easy - dockers are configured to restart automatically, there is
-a certbot container running that tries to renew the certificates every 12 hours plus
-a periodic task that reloads the nginx server to pick up the new certs. 
+The Onezone docker is configured to restart automatically. 
 
-In case the dockers are killed in some way, just do "docker-compose up -d".
+You can use the `onezone.sh` script to easily start / stop the deployment and
+for some convenient commands allowing to exec to the container or view the logs.
 
 
 ## Updating homepage GUI or docs
@@ -41,15 +40,20 @@ they use a mount point from host. To update the homepage or docs, use the
 "./update-homepage.py" script (consult the code or use --help for more).
 
 Update GUI files:
-~~~
+```
 ./update-homepage.py --gui docker.onedata.org/homepage:ID-67e61b7749
 <commit the changes, pull them on the host>
 ./update-homepage.py --deploy   # run on the host
-~~~
+```
 
 Update docs:
-~~~
+```
 ./update-homepage.py --docs docker.onedata.org/onedata-documentation:ID-926790c237
 <commit the changes, pull them on the host>
 ./update-homepage.py --deploy   # run on the host
-~~~
+```
+
+
+
+[onezone.sh]: ../../README.md#onezone.sh
+[OpenID & SAML]: https://onedata.org/#/home/documentation/doc/administering_onedata/openid_saml_configuration/openid_saml_configuration_19_02.html
