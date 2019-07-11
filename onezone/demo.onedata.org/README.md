@@ -1,11 +1,4 @@
-# Onezone deployment example (wizard)
-
-This template can be used to set up a Onezone instance using batch mode
-installation (determined by the `ONEPANEL_BATCH_MODE=false` variable in 
-`docker-compose.yaml`). After starting the instance, the Onepanel service will 
-be running in the docker container - you can visit `https://$HOST_IP:9443` and a 
-wizard will walk you through the installation.
-
+# Scripts for deploying Onezone @ demo.onedata.org
 
 ## Prerequisites
 
@@ -14,18 +7,25 @@ Prepare a host with the following:
 * docker
 * docker-compose
 * python + pyyaml
-* hostname set to example.com   *(substitute with desired hostname)*
-* proper DNS setup of your domain, either:
-    * make sure your domain is resolvable by DNS
-    * or delegate the domain to Onezone's built-in DNS server ([see more][Subdomain delegation])
+* hostname set to demo.onedata.org
+* static DNS NS records pointing at the host IP for subdomain demo.onedata.org, e.g.:
+  ```
+  demo.onedata.org.      120  IN  NS  ns1.demo.onedata.org
+  ns1.demo.onedata.org.  120  IN  A   149.156.182.28
+  ```
+  Onezone will handle the requests for the domain using the build-in DNS server,
+  which enables subdomain delegation for subject Oneproviders (you can find out
+  more [here][Subdomain delegation]).
 
 
 ## First deployment
 
 1. Place your auth.config in `data/secret/auth.config` - see [OpenID & SAML] for more
 2. Run `./onezone.sh start` (see [onezone.sh]) 
-3. Visit `https://$HOST_IP:9443` and step through the installation wizard
-4. When prompted for emergency passphrase (1st step), provide the one from `data/secret/emergency-passphrase.txt`
+3. The installation should happen automatically (batch mode) and might take a while 
+   (consult container logs for indication whether the installation was finished)
+4. Visit https://demo.onedata.org and log in using the credentials 
+`admin:EMERGENCY_PASSPHRASE` (can be found in `data/secret/emergency-passphrase.txt`)
 
 
 ## Maintaining the deployment

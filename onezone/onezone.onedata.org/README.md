@@ -21,7 +21,7 @@ Prepare a host with the following:
 ## First deployment
 
 1. Place your auth.config in `data/secret/auth.config` - see [OpenID & SAML] for more
-2. Run `./onezone.sh start` (see [onezone.sh]) or `docker-compose up -d`
+2. Run `./onezone.sh start` (see [onezone.sh]) 
 3. Visit https://$HOST_IP:9443 and step through the installation wizard
 4. When prompted for emergency passphrase (1st step), provide the one from `data/secret/emergency-passphrase.txt`
 
@@ -33,29 +33,19 @@ The Onezone docker is configured to restart automatically.
 You can use the `onezone.sh` script to easily start / stop the deployment and
 for some convenient commands allowing to exec to the container or view the logs.
 
+Regularly back-up the persistence directory: `data/persistence`.
 
-## Updating homepage GUI or docs
+To upgrade, stop the deployment (`./onezone.sh stop`), bump the onezone image 
+version in `docker-compose.yaml` and start the deployment (`./onezone.sh start`).
+Make sure to back-up the persistence directory beforehand.
 
-The static files of GUI or docs can be updated without stopping the containers - 
-they use a mount point from host. To update the homepage or docs, use the 
-"./update-homepage.py" script (consult the code or use --help for more).
 
-Update GUI files:
-```
-./update-homepage.py --gui docker.onedata.org/homepage:ID-67e61b7749
-<commit the changes, pull them on the host>
-./update-homepage.py --deploy   # run on the host
-```
+## More
 
-Update docs:
-```
-./update-homepage.py --docs docker.onedata.org/onedata-documentation:ID-926790c237
-<commit the changes, pull them on the host>
-./update-homepage.py --deploy   # run on the host
-```
-
+Please refer to the [documentation][onezone docs].
 
 
 [Subdomain delegation]: https://onedata.org/#/home/documentation/doc/administering_onedata/onezone_tutorial[dns-records-setup-for-subdomain-delegation].html
 [onezone.sh]: ../../README.md#onezone.sh
 [OpenID & SAML]: https://onedata.org/#/home/documentation/doc/administering_onedata/openid_saml_configuration/openid_saml_configuration_19_02.html
+[onezone docs]: https://onedata.org/#/home/documentation/doc/administering_onedata/onezone_tutorial.html

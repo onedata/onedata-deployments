@@ -27,6 +27,10 @@ maintaining production Onedata deployments. You can also find some examples
                            Onezone deployment used for demo purposes and testing
                            of bleeding edge releases
                            
+    * *examples* - ready to use templates to set up you own instances, using the 
+                   [graphical wizard](onezone/examples/graphical-wizard/README.md)
+                   or [batch mode](onezone/examples/batch-mode/README.md)
+                           
                 
                 
 * **oneprovider** - configs used in production Oneprovider instances 

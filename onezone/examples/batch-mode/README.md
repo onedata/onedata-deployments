@@ -1,10 +1,9 @@
 # Onezone deployment example (wizard)
 
-This template can be used to set up a Onezone instance using batch mode
-installation (determined by the `ONEPANEL_BATCH_MODE=false` variable in 
-`docker-compose.yaml`). After starting the instance, the Onepanel service will 
-be running in the docker container - you can visit `https://$HOST_IP:9443` and a 
-wizard will walk you through the installation.
+This template can be used to set up a Onezone instance using graphical wizard
+installation (determined by the `ONEPANEL_BATCH_MODE=true` variable in 
+`docker-compose.yaml`). The service will be installed automatically according
+to the config in BATCH_CONFIG section of `docker-compose.yaml`. 
 
 
 ## Prerequisites
@@ -24,8 +23,10 @@ Prepare a host with the following:
 
 1. Place your auth.config in `data/secret/auth.config` - see [OpenID & SAML] for more
 2. Run `./onezone.sh start` (see [onezone.sh]) 
-3. Visit `https://$HOST_IP:9443` and step through the installation wizard
-4. When prompted for emergency passphrase (1st step), provide the one from `data/secret/emergency-passphrase.txt`
+3. The installation should happen automatically (batch mode) and might take a while 
+   (consult container logs for indication whether the installation was finished)
+4. Visit https://demo.onedata.org and log in using the credentials 
+`admin:EMERGENCY_PASSPHRASE` (can be found in `data/secret/emergency-passphrase.txt`)
 
 
 ## Maintaining the deployment
