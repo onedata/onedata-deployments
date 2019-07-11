@@ -66,3 +66,4 @@ services:
         onezone:
           name: "DEMO"
           domainName: "demo.onedata.org"
+          letsEncryptEnabled: true
