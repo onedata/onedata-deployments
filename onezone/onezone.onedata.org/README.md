@@ -39,6 +39,9 @@ To upgrade, stop the deployment (`./onezone.sh stop`), bump the onezone image
 version in `docker-compose.yaml` and start the deployment (`./onezone.sh start`).
 Make sure to back-up the persistence directory beforehand.
 
+If you modify anything (e.g. onezone image), please commit the changes rather
+than make them only locally on the host.
+
 
 ## More
 
