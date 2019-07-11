@@ -14,7 +14,8 @@ Prepare a host with the following:
   ns1.onezone.onedata.org.  120  IN  A   149.156.182.35
   ```
   Onezone will handle the requests for the domain using the build-in DNS server,
-  which enables subdomain delegation for subject Oneproviders.
+  which enables subdomain delegation for subject Oneproviders (you can find out
+  more [here][Subdomain delegation]).
 
 
 ## First deployment
@@ -55,5 +56,6 @@ Update docs:
 
 
 
+[Subdomain delegation]: https://onedata.org/#/home/documentation/doc/administering_onedata/onezone_tutorial[dns-records-setup-for-subdomain-delegation].html
 [onezone.sh]: ../../README.md#onezone.sh
 [OpenID & SAML]: https://onedata.org/#/home/documentation/doc/administering_onedata/openid_saml_configuration/openid_saml_configuration_19_02.html
