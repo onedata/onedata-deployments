@@ -59,9 +59,9 @@ If you wish, you can simply use `docker-compose up -d`, but be aware of the foll
 * If you are installing using the graphical wizard, the emergency passphrase is not needed
   to be specified beforehand - you will be asked to set up one during installation
 * If you are installing using the batch mode, you must provide an emergency 
-  passphrase in the EMERGENCY_PASSPHRASE env variable (which is referenced in 
+  passphrase in the `EMERGENCY_PASSPHRASE` env variable (which is referenced in 
   `docker-compose.yaml`)
-* If you are restarting the deployment, EMERGENCY_PASSPHRASE is not obligatory, 
+* If you are restarting the deployment, `EMERGENCY_PASSPHRASE` is not obligatory, 
   but it will allow you to see more output from the service startup.
                  
                  
