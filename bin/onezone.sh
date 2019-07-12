@@ -17,6 +17,7 @@ if [[ -z "${EMERGENCY_PASSPHRASE}" ]]; then
 fi
 
 # EMERGENCY_PASSPHRASE env is referenced in docker-compose.yml
+
 case ${1} in
     start)
         EMERGENCY_PASSPHRASE=${EMERGENCY_PASSPHRASE} docker-compose up -d
@@ -51,9 +52,12 @@ case ${1} in
         # Displays oz-panel logs
         docker exec -it onezone cat /var/log/oz_panel/info.log
         ;;
+    emergency-passphrase)
+        echo "${EMERGENCY_PASSPHRASE}"
+        ;;
     *)
         echo "Unknown command '${1}'"
-        echo "Available commands: start | stop | restart | logs | exec | worker | panel"
+        echo "Available commands: start | stop | restart | logs | exec | worker | panel | worker-logs | panel-logs | emergency-passphrase"
         exit 1
         ;;
 esac
