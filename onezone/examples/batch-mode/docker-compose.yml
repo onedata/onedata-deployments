@@ -31,13 +31,13 @@ services:
       #   ONEPANEL_GENERATED_CERT_DOMAIN and signed by OnedataTestWebServerCa
       # NOTE: The generation will be performed upon every startup, any
       #   existing certs will be backed up and placed in the same directory.
-      # WARNING: This functionality is devised for test purposes and must not
+      # WARNING: This feature is devised for test purposes and must not
       #   be used in production.
       ONEPANEL_GENERATE_TEST_WEB_CERT: "false"  # default: false
       # The generated test web cert will be issued for below domain.
       ONEPANEL_GENERATED_CERT_DOMAIN: ""  # default: ""
       # If enabled, onepanel will trust any server that has a cert signed by
       #   the OnedataTestWebServerCa.
-      # WARNING: This functionality is devised for test purposes and must not
+      # WARNING: This feature is devised for test purposes and must not
       #   be used in production.
       ONEPANEL_TRUST_TEST_CA: "false"  # default: false
