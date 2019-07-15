@@ -1,6 +1,6 @@
-# Onezone deployment example (wizard)
+# Onezone deployment example (batch mode)
 
-This template can be used to set up a Onezone instance using graphical wizard
+This template can be used to set up a Onezone instance using batch mode
 installation (determined by the `ONEPANEL_BATCH_MODE=true` variable in 
 `docker-compose.yaml`). The service will be installed automatically according
 to the config in BATCH_CONFIG section of `docker-compose.yaml`. 

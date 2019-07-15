@@ -1,6 +1,9 @@
 #!/bin/bash
 cd "$(dirname "$0")"
 
+# exit on errors
+set -e
+
 EM_PASSPHRASE_FILE="data/secret/emergency-passphrase.txt"
 EMERGENCY_PASSPHRASE=""
 
@@ -38,11 +41,11 @@ case ${1} in
         ;;
     worker)
         # Attaches to oz-worker's erlang console (exit with Ctrl + D)
-        docker exec -it onezone oz_worker attach-direct
+        docker exec -it onezone oz_worker attach-direct -f
         ;;
     panel)
         # Attaches to oz-panel's erlang console (exit with Ctrl + D)
-        docker exec -it onezone oz_panel attach-direct
+        docker exec -it onezone oz_panel attach-direct -f
         ;;
     worker-logs)
         # Displays oz-worker logs
