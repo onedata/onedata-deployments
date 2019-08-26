@@ -6,10 +6,8 @@ version: '3'
 services:
   nginx:
     image: nginx:1.15-alpine
-    restart: unless-stopped
     volumes:
-      - ./nginx:/etc/nginx/conf.d
-      - ../html:/var/www/html
+      - ./config/nginx-preview.conf:/etc/nginx/conf.d/app.conf:ro
+      - ./persistence/html:/var/www/html
     ports:
       - "8080:8080"
-
