@@ -16,6 +16,12 @@ Prepare a host with the following:
 * static DNS A records pointing to the host's IP for domains onedata.org and www.onedata.org
 
 
+## Preview the docs locally
+
+1. Run `./update-homepage.py --deploy` to deploy static GUI / docs files according to `homepage-config.yaml`
+2. Run `./test-preview.sh`, the docs page should show up automatically in your browser on `http://localhost:8080` (if not, visit the page manually) - this starts a simple docker with nginx
+
+
 ## First deployment
 
 1. Run `./update-homepage.py --deploy` to deploy static GUI / docs files according to `homepage-config.yaml`

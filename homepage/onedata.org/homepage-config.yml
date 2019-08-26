@@ -1,7 +1,6 @@
+docs:
+  docker: docker.onedata.org/onedata-documentation:ID-f0c9e7d9fd
+  output-path: ./persistence/html/docs
 gui:
   docker: docker.onedata.org/homepage:ID-6efba6d87a
-  output-path: ./data/html
-docs:
-  docker: docker.onedata.org/onedata-documentation:ID-926790c237
-  output-path: ./data/html/docs
-
+  output-path: ./persistence/html
