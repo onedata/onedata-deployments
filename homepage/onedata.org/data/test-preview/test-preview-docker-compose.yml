@@ -1,0 +1,15 @@
+# Based on https://github.com/wmnnd/nginx-certbot
+# LICENCE: https://github.com/wmnnd/nginx-certbot/blob/master/LICENSE
+
+version: '3'
+
+services:
+  nginx:
+    image: nginx:1.15-alpine
+    restart: unless-stopped
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ../html:/var/www/html
+    ports:
+      - "8080:8080"
+
