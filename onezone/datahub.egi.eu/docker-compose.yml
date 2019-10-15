@@ -1,0 +1,41 @@
+version: '2'
+
+services:
+  node1.onezone:
+    restart: always
+    image: docker.onedata.org/onezone:19.02.0-rc2
+    network_mode: host
+    container_name: onezone
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      # Onezone persistence
+      - "./data/persistence:/volumes/persistence"
+      # OpenID & SAML config
+      - "./data/secret/auth.config:/etc/oz_worker/auth.config"
+      # Config overlay
+      - "./data/configs/overlay.config:/etc/oz_worker/overlay.config"
+    ports:
+      # dns server
+      - "53:53"
+      - "53:53/udp"
+      # http server
+      - "80:80"
+      - "443:443"
+      # distributed erlang
+      - "9443:9443"
+      - "4369:4369"
+      - "9100-9139:9100-9139"
+      # couchbase
+      - "8091:8091"
+      - "8092:8092"
+      - "11207:11207"
+      - "11209:11209"
+      - "11210:11210"
+      - "11211:11211"
+      - "18091-18092:18091-18092"
+      - "21100-21299:21100-21299"
+    environment:
+      ONEPANEL_DEBUG_MODE: "true" # if true prevents container exit on configuration error
+      ONEPANEL_LOG_LEVEL: "info"
+      ONEPANEL_BATCH_MODE: "false"
+      ONEPANEL_EMERGENCY_PASSPHRASE: ${EMERGENCY_PASSPHRASE}
