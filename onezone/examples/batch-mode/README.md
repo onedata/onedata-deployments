@@ -3,7 +3,7 @@
 This template can be used to set up a Onezone instance using batch mode
 installation (determined by the `ONEPANEL_BATCH_MODE=true` variable in 
 `docker-compose.yaml`). The service will be installed automatically according
-to the config in BATCH_CONFIG section of `docker-compose.yaml`. 
+to the config in `ONEZONE_CONFIG` section of `docker-compose.yaml`. 
 
 
 ## Prerequisites
@@ -21,11 +21,13 @@ Prepare a host with the following:
 
 ## First deployment
 
-1. Place your auth.config in `data/secret/auth.config` - see [OpenID & SAML] for more
-2. Run `./onezone.sh start` (see [onezone.sh]) 
-3. The installation should happen automatically (batch mode) and might take a while 
+1. Examine the `ONEZONE_CONFIG` section of `docker-compose.yaml` and put in the 
+    desired values (name, domain)
+2. Place your auth.config in `data/secret/auth.config` - see [OpenID & SAML] for more
+3. Run `./onezone.sh start` (see [onezone.sh]) 
+4. The installation should happen automatically (batch mode) and might take a while 
    (consult container logs for indication whether the installation was finished)
-4. Visit https://demo.onedata.org and log in using the credentials 
+5. Visit https://demo.onedata.org and log in using the credentials 
 `admin:EMERGENCY_PASSPHRASE` (can be found in `data/secret/emergency-passphrase.txt`)
 
 
