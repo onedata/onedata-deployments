@@ -59,15 +59,16 @@ Regularly back-up the persistence directory: `./data/persistence`.
 2. Commit the changes to this repository
 3. SSH to the master node (`ubuntu@onedata00.cloud.plgrid.pl`)
 4. Run `./pull-changes-on-all-nodes.sh` to checkout the latest commit on all nodes
-5. If auth.config needs change
+5. Pull the new Onezone docker on all nodes
+6. If auth.config needs change
     * overwrite the one in `./data/secret/auth.config`
     * run `./distribute-auth-config-and-em-pass.sh` to distribute it
-6. While the system is running, create a backup **on all nodes**, e.g.
+7. While the system is running, create a backup **on all nodes**, e.g.
     * `sudo rsync -avzs ./data/persistence ~/backup-20191115-18.02.2` 
-7. Run `./onezone.sh stop` **on all nodes** (see [onezone.sh]) 
-8. Repeat the backup **on all nodes** again to include changes from these couple of seconds
+8. Run `./onezone.sh stop` **on all nodes** (see [onezone.sh]) 
+9. Repeat the backup **on all nodes** again to include changes from these couple of seconds
     * `sudo rsync -avzs ./data/persistence ~/backup-20191115-18.02.2` 
-9. Run `./onezone.sh start` **on all nodes** (see [onezone.sh]) 
+10. Run `./onezone.sh start` **on all nodes** (see [onezone.sh]) 
 
 
 ## More
