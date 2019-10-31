@@ -1,5 +1,5 @@
 docs:
-  docker: docker.onedata.org/onedata-documentation:ID-157533ca8e
+  docker: docker.onedata.org/onedata-documentation:ID-a100500a39
   output-path: ./persistence/html/docs
 gui:
   docker: docker.onedata.org/homepage:ID-6efba6d87a
