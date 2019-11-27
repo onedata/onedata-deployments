@@ -3,7 +3,7 @@ version: '2'
 services:
   node1.onezone:
     restart: always
-    image: docker.onedata.org/onezone:19.02.0-rc2
+    image: onedata/onezone:19.02.0-rc2
     network_mode: host
     container_name: onezone
     volumes:
