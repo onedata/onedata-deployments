@@ -58,9 +58,13 @@ case ${1} in
     emergency-passphrase)
         echo "${EMERGENCY_PASSPHRASE}"
         ;;
+    db-browser)
+        shift
+        docker exec -it onezone /var/lib/oz_worker/db_browser.sh ${@}
+        ;;
     *)
         echo "Unknown command '${1}'"
-        echo "Available commands: start | stop | restart | logs | exec | worker | panel | worker-logs | panel-logs | emergency-passphrase"
+        echo "Available commands: start | stop | restart | logs | exec | worker | panel | worker-logs | panel-logs | emergency-passphrase | db-browser"
         exit 1
         ;;
 esac
