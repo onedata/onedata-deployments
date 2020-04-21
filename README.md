@@ -28,10 +28,14 @@ maintaining production Onedata deployments. You can also find some examples
                            of bleeding edge releases                
                 
     * *datahub.egi.eu* - ([README](onezone/datahub.egi.eu/README.md))
-                           Onezone deployment for EGI DataHub         
-                
-    * *onedata.plgrid.pl* - ([README](onezone/onedata.plgrid.pl/README.md))
-                           Onezone deployment for PLGrid
+                         Onezone deployment for EGI DataHub         
+      
+    * *demo.onedata.org* - ([README](onezone/demo.onedata.org/README.md))
+                           Onezone deployment used for demo purposes and testing
+                           of bleeding edge releases       
+            
+    * *hub.crmdr.org* - ([README](onezone/hub.crmdr.org/README.md))
+                        Onezone deployment for COVID-19 medical database
                            
     * *examples* - ready to use templates to set up you own instances, using the 
                    [graphical wizard](onezone/examples/graphical-wizard/README.md)

@@ -1,4 +1,4 @@
-# Scripts for deploying Onezone @ onedata.plgrid.pl
+# Scripts for deploying Onezone @ hub.crmdr.org
 
 ## Prerequisites
 
@@ -7,11 +7,11 @@ Prepare a host with the following:
 * docker
 * docker-compose
 * python + pyyaml
-* hostname set to onedata.plgrid.pl
-* static DNS NS records pointing at the host IP for subdomain onedata.plgrid.pl, e.g.:
+* hostname set to hub.crmdr.org
+* static DNS NS records pointing at the host IP for subdomain hub.crmdr.org, e.g.:
   ```
-  onedata.plgrid.pl.        120  IN  NS  ns1.onedata.plgrid.pl
-  ns1.onedata.plgrid.pl.    120  IN  A   149.156.182.58
+  hub.crmdr.org.      120  IN  NS  ns1.hub.crmdr.org
+  ns1.hub.crmdr.org.  120  IN  A   212.189.205.193
   ```
   Onezone will handle the requests for the domain using the build-in DNS server,
   which enables subdomain delegation for subject Oneproviders (you can find out
@@ -23,8 +23,9 @@ Prepare a host with the following:
 1. Place your auth.config in `data/secret/auth.config` - see [OpenID & SAML] for more
 2. Verify that `data/configs/overlay.config` includes desired and up-to-date config
 3. Run `./onezone.sh start` (see [onezone.sh]) 
-4. The installation should happen automatically (batch mode) and might take a while (consult container logs for indication whether the installation was finished)
-5. Visit https://onedata.plgrid.pl and log in using the credentials 
+4. The installation should happen automatically (batch mode) and might take a while 
+   (consult container logs for indication whether the installation was finished)
+5. Visit https://hub.crmdr.org and log in using the credentials 
 `admin:EMERGENCY_PASSPHRASE` (can be found in `data/secret/emergency-passphrase.txt`)
 
 

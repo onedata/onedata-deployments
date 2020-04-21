@@ -39,9 +39,10 @@ Prepare 4 hosts with the following:
 4. Place your auth.config in `./data/secret/auth.config` - see [OpenID & SAML] for more
 5. Place your emergency password in `./data/secret/emergency-password.txt`
 6. Run `./distribute-auth-config-and-em-pass.sh` to distribute the secret files 
-7. Run `./onezone.sh start` **on all nodes** (see [onezone.sh]) 
-8. Visit `https://$HOST_IP:9443` and step through the installation wizard
-9. When prompted for emergency passphrase (1st step), provide the one from `data/secret/emergency-passphrase.txt`
+7. Verify that `data/configs/overlay.config` includes desired and up-to-date config
+8. Run `./onezone.sh start` **on all nodes** (see [onezone.sh]) 
+9. Visit `https://$HOST_IP:9443` and step through the installation wizard
+10. When prompted for emergency passphrase (1st step), provide the one from `data/secret/emergency-passphrase.txt`
 
 
 ## Maintaining the deployment
