@@ -65,4 +65,4 @@ services:
         onezone:
           name: "CRMDR"
           domainName: "hub.crmdr.org"
-          letsEncryptEnabled: true
+          letsEncryptEnabled: false
