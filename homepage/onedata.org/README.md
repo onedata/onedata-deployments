@@ -16,15 +16,16 @@ Prepare a host with the following:
 * static DNS A records pointing to the host's IP for domains onedata.org and www.onedata.org
 
 
-## Preview the docs locally
+## Preview the homepage locally
 
-1. Run `./update-homepage.py --deploy` to deploy static GUI / docs files according to `homepage-config.yaml`
-2. Run `./test-preview.sh`, the docs page should show up automatically in your browser on `http://localhost:8080` (if not, visit the page manually) - this starts a simple docker with nginx
+Run `./test-preview.sh`, the homepage should show up automatically in your 
+browser on `http://localhost:8000` (if not, visit the page manually) - 
+this runs the homepage static docker with a web server inside.
 
 
 ## First deployment
 
-1. Run `./update-homepage.py --deploy` to deploy static GUI / docs files according to `homepage-config.yaml`
+1. Run `./update-homepage.py --deploy` to deploy static homepage files according to `homepage-docker-image.cfg`
 2. Run `./init-letsencrypt.sh`, you might want to enable staging mode before (see the beginning of the script)
 3. Verify if the certificates are OK and homepage is served on onedata.org
 4. Run `docker-compose up -d`
@@ -39,22 +40,20 @@ there is a certbot container running that tries to renew the certificates every
 In case the dockers are killed somehow, just do `docker-compose up -d`.
 
 
-## Updating homepage GUI or docs
+## Updating the homepage
 
-The static files of GUI or docs can be updated without stopping the containers - 
-they use a mount point from host. To update the homepage or docs, use the 
-`./update-homepage.py` script (consult the code or use --help for more).
+The static files of homepage can be updated without stopping the containers - 
+they use a mount point from host. Use the `./update-homepage.py` script 
+(consult the code or use --help for more). General procedure looks like the following:
 
-Update GUI files:
-```
-./update-homepage.py --gui docker.onedata.org/homepage:ID-67e61b7749
-<commit the changes, pull them on the host>
-./update-homepage.py --deploy   # run on the host
-```
+1. Run `./update-homepage.py --image docker.onedata.org/homepage:ID-67e61b7749`
+in the repository (replace with desired ID), this will change the image 
+in `homepage-docker-image.cfg`.
 
-Update docs:
-```
-./update-homepage.py --docs docker.onedata.org/onedata-documentation:ID-926790c237
-<commit the changes, pull them on the host>
-./update-homepage.py --deploy   # run on the host
-```
+2. Commit and push the changes
+
+3. Pull the changes on the onedata.org host
+
+4. Run `./update-homepage.py --deploy` on the onedata.org host
+
+5. Done, the nginx will be serving the new homepage from now on.

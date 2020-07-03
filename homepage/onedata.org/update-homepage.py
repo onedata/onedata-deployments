@@ -1,71 +1,74 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+"""
+Utility script used for maintaining homepage deployment - allows setting the
+docker image that will be used as source of static homepage files and deploying
+the static files. The process of deploying simply copies the static artifact
+located in the homepage docker into the location from which the files are served
+by an nginx server (STATIC_FILES_OUTPUT_PATH). The nginx server is started
+in a docker with the STATIC_FILES_OUTPUT_PATH bind-mounted, which makes it
+possible to simply overwrite the static artifact on the host and it will be
+picked up by nginx without restarting the docker.
+
+"""
+__author__ = "Lukasz Opiola"
+__copyright__ = "Copyright (C) 2019-2020 ACK CYFRONET AGH"
+__license__ = "This software is released under the MIT license cited in " \
+              "LICENSE.txt"
 
 import os
+import re
 import sys
-import yaml
 import tempfile
 import shutil
 from subprocess import call as cmd
 from subprocess import check_output as output
 
-CFG_FILE = 'homepage-config.yml'
+SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+DOCKER_IMAGE_FILE_NAME = 'homepage-docker-image.cfg'
+DOCKER_IMAGE_FILE_PATH = os.path.join(SCRIPT_DIR, DOCKER_IMAGE_FILE_NAME)
+DOCKER_IMAGE_EXAMPLE = 'docker.onedata.org/homepage:ID-c104a634b4'
+DOCKER_IMAGE_REGEX = re.compile('[a-z0-9]+(?:[._-]{1,2}[a-z0-9]+)*')
 ARTIFACT_PATH = '/artefact'
+STATIC_FILES_OUTPUT_PATH = './persistence/html'
 
 
 def print_help():
     print('Usage: {} <option>'.format(sys.argv[0]))
-    print('  --help       - display help and exit')
-    print('  --docs <id>  - update docs version in {}'.format(CFG_FILE))
-    print('  --gui <id>   - update gui version in {}'.format(CFG_FILE))
-    print('  --deploy     - deploy docs and gui based on {}'.format(CFG_FILE))
+    print('  --help        - display help and exit')
+    print('  --image <id>  - update image in {}'.format(DOCKER_IMAGE_FILE_NAME))
+    print('  --deploy      - deploy homepage static files based on {}'.format(DOCKER_IMAGE_FILE_NAME))
     print('--------------------------------------------------------')
-    print('<id> - a docker tag, e.g.: \'onedata/oz-gui-homepage:ID-2563caab9\'')
+    print('<id> - a docker tag, e.g.: \'{}\''.format(DOCKER_IMAGE_EXAMPLE))
 
 
-def print_versions_file_help(versions_file):
-    print('Error - expected config file in \'{}\'. It must contain a valid '
-          'config, for example:'.format(versions_file))
-    print('''--------------------------------------------------------
-gui:
-    docker: docker.onedata.org/oz-gui-homepage:ID-30e6e688ac
-    output-path: /volumes/gui
-docs:
-    docker: docker.onedata.org/onedata-documentation:ID-fe65d545aa
-    output-path: /volumes/docs
---------------------------------------------------------'''.format(
-        CFG_FILE))
+def print_homepage_docker_image_file_help():
+    print('Error - expected valid image in \'{}\', for example: {}'.format(
+        DOCKER_IMAGE_FILE_NAME, DOCKER_IMAGE_EXAMPLE
+    ))
 
 
-def ensure_config(versions_file):
-    if not os.path.isfile(versions_file):
-        print_versions_file_help(versions_file)
-        return None
-
-    with open(versions_file, 'r') as stream:
-        try:
-            cfg = yaml.load(stream, Loader=yaml.FullLoader)
-        except AttributeError:
-            cfg = yaml.load(stream)
+def read_image_file():
+    result = None
 
     try:
-        _ = cfg['gui']['docker']
-        _ = cfg['gui']['output-path']
-        _ = cfg['docs']['docker']
-        _ = cfg['docs']['output-path']
-        return cfg
+        if os.path.isfile(DOCKER_IMAGE_FILE_PATH):
+            with open(DOCKER_IMAGE_FILE_PATH, 'r') as file:
+                contents = file.read()
+                docker_image = "".join(contents.split())  # trim all whitespace
+                if DOCKER_IMAGE_REGEX.match(docker_image):
+                    result = docker_image
     except Exception:
-        print_versions_file_help(versions_file)
-        return None
+        pass
+
+    if result is None:
+        print_homepage_docker_image_file_help()
+
+    return result
 
 
-def update_config(versions_file, new_cfg):
-    with open(versions_file, "w+") as f:
-        yaml.safe_dump(new_cfg, f, default_flow_style=False)
-
-
-def copy_from_docker(docker, output_path):
-    if not os.path.isdir(output_path):
-        os.makedirs(output_path)
+def deploy_static_files_from_docker(docker):
+    if not os.path.isdir(STATIC_FILES_OUTPUT_PATH):
+        os.makedirs(STATIC_FILES_OUTPUT_PATH)
     cmd(['docker', 'pull', docker])
     out = output(['docker', 'create', '-v', ARTIFACT_PATH, docker, '/bin/true'])
     container = out.rstrip()
@@ -74,40 +77,31 @@ def copy_from_docker(docker, output_path):
     cmd(['docker', 'cp', '-L', container + ':' + ARTIFACT_PATH, cp_dest])
     cmd(['docker', 'rm', '-f', container])
 
-    cmd(['chmod', '-R', '+w', output_path])
-    cmd(['cp', '-R', os.path.join(cp_dest, '.'), output_path])
+    cmd(['chmod', '-R', '+w', STATIC_FILES_OUTPUT_PATH])
+    cmd(['cp', '-R', os.path.join(cp_dest, '.'), STATIC_FILES_OUTPUT_PATH])
 
     shutil.rmtree(temp_dir)
 
 
 def main():
-    script_dir = os.path.dirname(os.path.realpath(__file__))
-    versions_file = os.path.join(script_dir, CFG_FILE)
-    cfg = ensure_config(versions_file)
-    if cfg:
-        if len(sys.argv) == 2 and sys.argv[1] == '--help':
-            print_help()
+    if len(sys.argv) == 2 and sys.argv[1] == '--help':
+        print_help()
 
-        elif len(sys.argv) == 3 and sys.argv[1] == '--docs':
-            docs_docker = sys.argv[2]
-            cfg['docs']['docker'] = docs_docker
-            update_config(versions_file, cfg)
-
-        elif len(sys.argv) == 3 and sys.argv[1] == '--gui':
-            gui_docker = sys.argv[2]
-            cfg['gui']['docker'] = gui_docker
-            update_config(versions_file, cfg)
-
-        elif len(sys.argv) == 2 and sys.argv[1] == '--deploy':
-            gui_output_path = cfg['gui']['output-path']
-            gui_docker = cfg['gui']['docker']
-            docs_output_path = cfg['docs']['output-path']
-            docs_docker = cfg['docs']['docker']
-            copy_from_docker(gui_docker, gui_output_path)
-            copy_from_docker(docs_docker, docs_output_path)
-
+    elif len(sys.argv) == 3 and sys.argv[1] == '--image':
+        new_docker_image = sys.argv[2]
+        if DOCKER_IMAGE_REGEX.match(new_docker_image):
+            with open(DOCKER_IMAGE_FILE_PATH, "w+") as f:
+                f.write(new_docker_image)
         else:
-            print_help()
+            print('Invalid docker image was provided')
+
+    elif len(sys.argv) == 2 and sys.argv[1] == '--deploy':
+        docker_image = read_image_file()
+        if docker_image:
+            deploy_static_files_from_docker(docker_image)
+
+    else:
+        print_help()
 
 
 if __name__ == "__main__":
