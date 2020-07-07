@@ -25,7 +25,7 @@ this runs the homepage static docker with a web server inside.
 
 ## First deployment
 
-1. Run `./update-homepage.py --deploy` to deploy static homepage files according to `homepage-docker-image.cfg`
+1. Run `./update-homepage.py deploy` to deploy static homepage files according to `homepage-docker-image.cfg`
 2. Run `./init-letsencrypt.sh`, you might want to enable staging mode before (see the beginning of the script)
 3. Verify if the certificates are OK and homepage is served on onedata.org
 4. Run `docker-compose up -d`
@@ -44,9 +44,9 @@ In case the dockers are killed somehow, just do `docker-compose up -d`.
 
 The static files of homepage can be updated without stopping the containers - 
 they use a mount point from host. Use the `./update-homepage.py` script 
-(consult the code or use --help for more). General procedure looks like the following:
+(consult the code or `help` for more). General procedure looks like the following:
 
-1. Run `./update-homepage.py --image docker.onedata.org/homepage:ID-67e61b7749`
+1. Run `./update-homepage.py image docker.onedata.org/homepage:ID-67e61b7749`
 in the repository (replace with desired ID), this will change the image 
 in `homepage-docker-image.cfg`.
 
@@ -54,6 +54,6 @@ in `homepage-docker-image.cfg`.
 
 3. Pull the changes on the onedata.org host
 
-4. Run `./update-homepage.py --deploy` on the onedata.org host
+4. Run `./update-homepage.py deploy` on the onedata.org host
 
 5. Done, the nginx will be serving the new homepage from now on.

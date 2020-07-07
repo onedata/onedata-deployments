@@ -24,19 +24,20 @@ from subprocess import call as cmd
 from subprocess import check_output as output
 
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-DOCKER_IMAGE_FILE_NAME = 'homepage-docker-image.cfg'
+DOCKER_IMAGE_FILE_NAME = 'homepage-docker-image.conf'
 DOCKER_IMAGE_FILE_PATH = os.path.join(SCRIPT_DIR, DOCKER_IMAGE_FILE_NAME)
-DOCKER_IMAGE_EXAMPLE = 'docker.onedata.org/homepage:ID-c104a634b4'
 DOCKER_IMAGE_REGEX = re.compile('[a-z0-9]+(?:[._-]{1,2}[a-z0-9]+)*')
 ARTIFACT_PATH = '/artefact'
 STATIC_FILES_OUTPUT_PATH = './persistence/html'
 
+DOCKER_IMAGE_EXAMPLE = 'docker.onedata.org/homepage:ID-c104a634b4'
+
 
 def print_help():
     print('Usage: {} <option>'.format(sys.argv[0]))
-    print('  --help        - display help and exit')
-    print('  --image <id>  - update image in {}'.format(DOCKER_IMAGE_FILE_NAME))
-    print('  --deploy      - deploy homepage static files based on {}'.format(DOCKER_IMAGE_FILE_NAME))
+    print('  help        - display help and exit')
+    print('  image <id>  - update image in {}'.format(DOCKER_IMAGE_FILE_NAME))
+    print('  deploy      - deploy homepage static files based on {}'.format(DOCKER_IMAGE_FILE_NAME))
     print('--------------------------------------------------------')
     print('<id> - a docker tag, e.g.: \'{}\''.format(DOCKER_IMAGE_EXAMPLE))
 
@@ -54,7 +55,7 @@ def read_image_file():
         if os.path.isfile(DOCKER_IMAGE_FILE_PATH):
             with open(DOCKER_IMAGE_FILE_PATH, 'r') as file:
                 contents = file.read()
-                docker_image = "".join(contents.split())  # trim all whitespace
+                docker_image = ''.join(contents.split())  # trim all whitespace
                 if DOCKER_IMAGE_REGEX.match(docker_image):
                     result = docker_image
     except Exception:
@@ -71,7 +72,7 @@ def deploy_static_files_from_docker(docker):
         os.makedirs(STATIC_FILES_OUTPUT_PATH)
     cmd(['docker', 'pull', docker])
     out = output(['docker', 'create', '-v', ARTIFACT_PATH, docker, '/bin/true'])
-    container = out.rstrip()
+    container = out.rstrip().decode()
     temp_dir = tempfile.mkdtemp()
     cp_dest = os.path.join(temp_dir, 'files')
     cmd(['docker', 'cp', '-L', container + ':' + ARTIFACT_PATH, cp_dest])
@@ -84,18 +85,18 @@ def deploy_static_files_from_docker(docker):
 
 
 def main():
-    if len(sys.argv) == 2 and sys.argv[1] == '--help':
+    if len(sys.argv) == 2 and sys.argv[1] == 'help':
         print_help()
 
-    elif len(sys.argv) == 3 and sys.argv[1] == '--image':
+    elif len(sys.argv) == 3 and sys.argv[1] == 'image':
         new_docker_image = sys.argv[2]
         if DOCKER_IMAGE_REGEX.match(new_docker_image):
-            with open(DOCKER_IMAGE_FILE_PATH, "w+") as f:
+            with open(DOCKER_IMAGE_FILE_PATH, 'w+') as f:
                 f.write(new_docker_image)
         else:
             print('Invalid docker image was provided')
 
-    elif len(sys.argv) == 2 and sys.argv[1] == '--deploy':
+    elif len(sys.argv) == 2 and sys.argv[1] == 'deploy':
         docker_image = read_image_file()
         if docker_image:
             deploy_static_files_from_docker(docker_image)
@@ -104,5 +105,5 @@ def main():
         print_help()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
