@@ -74,12 +74,20 @@ def deploy_static_files_from_docker(docker):
     out = output(['docker', 'create', '-v', ARTIFACT_PATH, docker, '/bin/true'])
     container = out.rstrip().decode()
     temp_dir = tempfile.mkdtemp()
-    cp_dest = os.path.join(temp_dir, 'files')
-    cmd(['docker', 'cp', '-L', container + ':' + ARTIFACT_PATH, cp_dest])
+    artifact_copy_on_host = os.path.join(temp_dir, 'files')
+    cmd(['docker', 'cp', '-L', container + ':' + ARTIFACT_PATH, artifact_copy_on_host])
     cmd(['docker', 'rm', '-f', container])
 
     cmd(['chmod', '-R', '+w', STATIC_FILES_OUTPUT_PATH])
-    cmd(['cp', '-R', os.path.join(cp_dest, '.'), STATIC_FILES_OUTPUT_PATH])
+
+    rsync_cmd = [
+        'rsync', '-ah', '--delete',
+        '--exclude=/.gitkeep',
+        ensure_trailing_slash(artifact_copy_on_host), 
+        ensure_trailing_slash(STATIC_FILES_OUTPUT_PATH)
+    ]
+    print(' '.join(rsync_cmd))
+    cmd(rsync_cmd)
 
     shutil.rmtree(temp_dir)
 
@@ -103,6 +111,10 @@ def main():
 
     else:
         print_help()
+
+
+def ensure_trailing_slash(path):
+    return os.path.join(path, '')
 
 
 if __name__ == '__main__':
