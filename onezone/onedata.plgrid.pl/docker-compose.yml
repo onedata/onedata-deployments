@@ -18,6 +18,7 @@ services:
       # Custom images used on the login page
       - "./data/images/xdc.png:/var/www/html/oz_worker/custom/xdc.png"
       - "./data/images/deep.png:/var/www/html/oz_worker/custom/deep.png"
+      - "./data/images/esci_sygnet_white_rgb.png:/var/www/html/oz_worker/custom/esci_sygnet_white_rgb.png"
     ports:
       - "53:53"
       - "53:53/udp"
