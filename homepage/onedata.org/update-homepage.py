@@ -91,6 +91,12 @@ def deploy_static_files_from_docker(docker):
 
     shutil.rmtree(temp_dir)
 
+    print('Removing the docker image ({})...'.format(docker))
+    cmd(['docker', 'rmi', docker])
+
+    print('')
+    print('All done! Visit onedata.org and make sure everything is there.')
+
 
 def main():
     if len(sys.argv) == 2 and sys.argv[1] == 'help':
