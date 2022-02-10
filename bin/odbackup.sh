@@ -1,15 +1,28 @@
 #!/bin/bash
+# Author: Darin Nikolow <darnik22@gmail.com>
+# Copyright (C) 2022 ACK Cyfronet AGH
+# This software is released under the MIT license cited in 'LICENSE.txt'
 
-MPATH=~/mpath
 
-trap finish INT
+# Backup multi node onedata deployments - if used live the data consistency is eventual
+#
+# Run time requirements:
+# - s3cmd installed and configured. A sample s3cfg file can be found in samples dir
+# - access to the nodes via ssh
+
+MPATH=${MPATH:-~/mpath}                   # the base path for the ssh multiplex socket on
+                                            #   the local host
+S3_CONF_PATH="${S3_CONF_PATH:-~/.s3cfg-prod-test}"      # path to the s3cmd config file on
+                                                        #   the remote nodes
+S3_BUCKET="${S3_BUCKET:-s3://datahub-backups}"          # S3 bucket name
 
 hosts=$*
 if [ """$hosts" == "" ]; then
-    echo Usage $0 '<hostname or ip> [hostname or ip ...]' 
+    echo "Usage $0 <hostname or ip> [hostname or ip ...]" 
     exit -1
 fi
 
+# Initialize ssh multiplexing conections
 for i in $hosts; do
     ssh -M -S ${MPATH}_$i $i sleep 99999 &
     until [ -S ${MPATH}_$i ]; do
@@ -18,12 +31,13 @@ for i in $hosts; do
     ssh -O check -S ${MPATH}_$i $i 
 done
 
+trap finish INT 
+
 # Run command concurrently on all ${hosts} and wait until they are finished
 function sshcmd {
     warr=()
     for i in ${hosts}; do
-        # echo "i=" $i
-        ssh -S ${MPATH}_$i $i bash -c \"$* \|\& xargs -I{} echo $i:\\\> {} \" &
+        ssh -S ${MPATH}_$i $i bash -c \"`eval echo $*` \|\& xargs -I{} echo $i:\\\> {} \" &
         warr+=$!
         warr+=" "
     done
@@ -31,42 +45,38 @@ function sshcmd {
 }
 
 function finish {
-    echo Closing ssh connections...
+    echo "Closing ssh connections..."
     for i in $hosts; do
         ssh -O exit -S ${MPATH}_$i $i
     done
 }
 
-
 # Warming up
-echo Warming up...
+echo "Warming up..."
 sshcmd hostname
-sshcmd date +%T.%N
 
 # sync twice in case of large differences in size of buffered data
 # among the nodes
-echo Syncing...
+echo "Syncing..."
 sshcmd sync
 sshcmd sync
-echo Creating snapshot...
+
+echo "Creating snapshot..."
 sshcmd sudo lvcreate -s -n lvol0-snap -l10%ORIGIN /dev/onedata-vg/lvol0
 sshcmd sudo mkdir -p /snapshots/opt/onedata
-echo Mounting snapshot...
+
+echo "Mounting snapshot..."
 sshcmd sudo mount /dev/onedata-vg/lvol0-snap /snapshots/opt/onedata/
 
-echo Taring and uploading to S3... 
-warr=()
-for i in $hosts; do
-    ssh -S ${MPATH}_$i $i sh -c \"cd /snapshots\; \
+echo "Taring and uploading to S3..."
+sshcmd "cd /snapshots\; \
         sudo tar zcf - opt/onedata \| \
-        s3cmd -c ~/.s3cfg-prod-test put - s3://datahub-backups/`date +%Y-%m-%d`_$i.tgz\" &
-    warr+=$!
-    warr+=" "
-done
-wait ${warr[@]}
-echo Unmounting snapshot...
+        s3cmd -c ${S3_CONF_PATH} put - ${S3_BUCKET}/`date +%Y-%m-%d`_\$i.tgz"
+
+echo "Unmounting snapshot..."
 sshcmd sudo umount /dev/onedata-vg/lvol0-snap
-echo Removing snapshot...
+
+echo "Removing snapshot..."
 sshcmd sudo lvremove -y /dev/onedata-vg/lvol0-snap
 
 finish

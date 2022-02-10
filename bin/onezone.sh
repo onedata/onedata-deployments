@@ -1,4 +1,8 @@
 #!/bin/bash
+# Author: Lukasz Opiola  
+# Copyright (C) 2020 ACK CYFRONET AGH
+# This software is released under the MIT license cited in 'LICENSE.txt'
+
 cd "$(dirname "$0")"
 
 # exit on errors

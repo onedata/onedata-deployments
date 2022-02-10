@@ -1,0 +1,4 @@
+domain: org
+subdomain: onedata
+disk_dev: /dev/sdd
+vg_name: onedata-vg
