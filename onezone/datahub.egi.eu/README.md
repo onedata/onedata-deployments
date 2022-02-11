@@ -56,9 +56,11 @@ Regularly back-up the persistence directory: `./data/persistence`. The script `o
 can be used to backup the service. See the top-level `../../README.md` for 
 usage instructions. The backup for the datahub onezone service is configured with 
 the following env vars:
-S3_CONF_PATH=~/.s3cfg-prod-test
-S3_BUCKET=s3://datahub-backups
+`S3_CONF_PATH=~/.s3cfg-prod-test`
+`S3_BUCKET=s3://datahub-backups`
 
+Currently, the backup script is called each day at about 1am. See `/etc/crontab` and 
+`/etc/cron.d/daily/datahub-backup` for details. 
 
 ### Upgrading / modifying the deployment
 

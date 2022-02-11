@@ -1,4 +1,5 @@
-domain: org
-subdomain: onedata
-disk_dev: /dev/sdd
-vg_name: onedata-vg
+domain: org         # domain name
+subdomain: onedata  # subdomain name. The FQDN of a node will be:
+                    #   {{inventory_hostname}}.{{subdomain}}.{{domain}}
+disk_dev: /dev/sdd  # path to the disk dev. The existing data will be lost.
+vg_name: onedata-vg # LVM volume group name

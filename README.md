@@ -50,7 +50,7 @@ maintaining production Onedata deployments. You can also find some examples
                     
 * **bin** - useful scripts (see below)
                     
-* **ansible** - ansible scripts for vm setup                    
+* **ansible** - ansible scripts for vm setup. See ansible/README.md.                   
                     
 ## Useful scripts
 
@@ -81,7 +81,7 @@ service is installed under the /opt/onedata filesystem, which is placed on a log
 volume. The logical volume is needed as the backup uses LVM snapshots.
 
 Usage:
-  odbackup <hostname or ip> [<hostname or ip> ... ]
+  `odbackup <hostname or ip> [hostname or ip ... ]`
 
                     
 [Onedatify wizard]: https://onedata.org/#/home/documentation/doc/administering_onedata/oneprovider_tutorial[onedatify-based-setup].html

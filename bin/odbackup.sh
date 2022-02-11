@@ -6,20 +6,21 @@
 
 # Backup multi node onedata deployments - if used live the data consistency is eventual
 #
-# Run time requirements:
-# - s3cmd installed and configured. A sample s3cfg file can be found in samples dir
+# Runtime requirements:
+# - s3cmd installed and configured on the nodes to be backed up. A sample s3cfg file
+#   can be found in samples dir
 # - access to the nodes via ssh
 
-MPATH=${MPATH:-~/mpath}                   # the base path for the ssh multiplex socket on
+MPATH=${MPATH:-/tmp/mpath}                  # the base path for the ssh multiplex socket on
                                             #   the local host
 S3_CONF_PATH="${S3_CONF_PATH:-~/.s3cfg-prod-test}"      # path to the s3cmd config file on
                                                         #   the remote nodes
 S3_BUCKET="${S3_BUCKET:-s3://datahub-backups}"          # S3 bucket name
 
 hosts=$*
-if [ """$hosts" == "" ]; then
-    echo "Usage $0 <hostname or ip> [hostname or ip ...]" 
-    exit -1
+if [ ""$hosts == "" ]; then
+    echo "Usage: $0 <hostname or ip> [hostname or ip ...]" 
+    exit 1
 fi
 
 # Initialize ssh multiplexing conections

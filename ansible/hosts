@@ -1,9 +1,9 @@
 [myhosts]
-# datahub-zone1-new ansible_host=10.20.30.7
-# datahub-zone2-new ansible_host=10.20.30.16
-# datahub-db1-new ansible_host=10.20.30.18
-# datahub-db2-new ansible_host=10.20.30.55
-oneprovider ansible_host=10.87.23.42 
+# node1 ansible_host=10.0.0.1
+# node2 ansible_host=10.0.0.2
+# node3 ansible_host=10.0.0.3
+# node4 ansible_host=10.0.0.4
+
 
 
 
