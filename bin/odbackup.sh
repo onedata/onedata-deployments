@@ -18,10 +18,11 @@ S3_CONF_PATH="${S3_CONF_PATH:-~/.s3cfg-prod-test}"      # path to the s3cmd conf
 S3_BUCKET="${S3_BUCKET:-s3://datahub-backups}"          # S3 bucket name
 
 hosts=$*
-if [ ""$hosts == "" ]; then
+if [ """$hosts" == "" ]; then
     echo "Usage: $0 <hostname or ip> [hostname or ip ...]" 
     exit 1
 fi
+
 
 # Initialize ssh multiplexing conections
 for i in $hosts; do
