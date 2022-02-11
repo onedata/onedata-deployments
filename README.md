@@ -50,7 +50,7 @@ maintaining production Onedata deployments. You can also find some examples
                     
 * **bin** - useful scripts (see below)
                     
-                    
+* **ansible** - ansible scripts for vm setup. See ansible/README.md.                   
                     
 ## Useful scripts
 
@@ -74,6 +74,14 @@ If you wish, you can simply use `docker-compose up -d`, but be aware of the foll
 * If you are restarting the deployment, `EMERGENCY_PASSPHRASE` is not obligatory, 
   but it will allow you to see more output from the service startup.
                  
-                 
+### odbackup.sh
+
+This script allows backing up of onedata services. It assumed in the script that the 
+service is installed under the /opt/onedata filesystem, which is placed on a logical 
+volume. The logical volume is needed as the backup uses LVM snapshots.
+
+Usage:
+  `odbackup <hostname or ip> [hostname or ip ... ]`
+
                     
 [Onedatify wizard]: https://onedata.org/#/home/documentation/doc/administering_onedata/oneprovider_tutorial[onedatify-based-setup].html

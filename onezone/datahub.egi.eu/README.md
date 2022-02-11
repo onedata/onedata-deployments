@@ -52,7 +52,15 @@ The Onezone dockers (on each host) are configured to restart automatically.
 You can use the `onezone.sh` script to easily start / stop the deployment and
 for some convenient commands allowing to exec to the container or view the logs.
 
-Regularly back-up the persistence directory: `./data/persistence`.
+Regularly back-up the persistence directory: `./data/persistence`. The script `odbackup.sh`
+can be used to backup the service. See the top-level `../../README.md` for 
+usage instructions. The backup for the datahub onezone service is configured with 
+the following env vars:
+`S3_CONF_PATH=~/.s3cfg-prod-test`
+`S3_BUCKET=s3://datahub-backups`
+
+Currently, the backup script is called each day at about 1am. See `/etc/crontab` and 
+`/etc/cron.d/daily/datahub-backup` for details. 
 
 ### Upgrading / modifying the deployment
 

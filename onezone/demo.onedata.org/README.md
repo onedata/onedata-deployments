@@ -35,7 +35,9 @@ The Onezone docker is configured to restart automatically.
 You can use the `onezone.sh` script to easily start / stop the deployment and
 for some convenient commands allowing to exec to the container or view the logs.
 
-Regularly back-up the persistence directory: `data/persistence`.
+Regularly back-up the persistence directory: `data/persistence`. The script `odbackup.sh`
+can be used to backup the service. See the top-level `../../README.md` for 
+usage instructions.
 
 To upgrade, stop the deployment (`./onezone.sh stop`), bump the onezone image 
 version in `docker-compose.yaml` and start the deployment (`./onezone.sh start`).
