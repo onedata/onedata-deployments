@@ -76,9 +76,12 @@ If you wish, you can simply use `docker-compose up -d`, but be aware of the foll
                  
 ### odbackup.sh
 
-This script allows backing up of onedata services. It assumed in the script that the 
-service is installed under the /opt/onedata filesystem, which is placed on a logical 
-volume. The logical volume is needed as the backup uses LVM snapshots.
+This script allows backing up of onedata services. It assumed in the
+script that the service is installed under the /opt/onedata
+filesystem, which is placed on a logical volume. The logical volume is
+needed as the backup uses LVM snapshots. The script writes the backups
+to an S3 bucket using `s3cmd`, which needs to be configured before
+running the script.
 
 Usage:
   `odbackup <hostname or ip> [hostname or ip ... ]`
