@@ -16,8 +16,7 @@ services:
       # OpenID & SAML config
       - "./data/secret/auth.config:/etc/oz_worker/auth.config"
       # Custom images used on the login page
-      - "./data/images/xdc.png:/var/www/html/oz_worker/custom/xdc.png"
-      - "./data/images/deep.png:/var/www/html/oz_worker/custom/deep.png"
+      - "./data/images/pracelab.svg:/var/www/html/oz_worker/custom/pracelab.svg"
     ports:
       - "53:53"
       - "53:53/udp"
