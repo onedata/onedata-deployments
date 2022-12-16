@@ -217,20 +217,24 @@ parse_plgrid_entitlement(RawEntitlement, ParserConfig) ->
 %% Returns an #idp_entitlement{} that represents user's group membership for PRACE-Lab project.
 %%
 %% Group format:
-%%      ^/PL\d\d\d\d[AEFO]?$
+%%      ^/PL\d{4,}[AEFO]?$
 %%          or
-%%      ^/PL\d\d\d\d\-\d+[AEFO]?$
+%%      ^/PL\d{4,}-\d+[AEFO]?$
 %% Examples:
 %%      /PL4500
 %%      /PL4500A
 %%      /PL4500O
 %%      /PL4500E
 %%      /PL4500F
+%%      /PL450091
+%%      /PL450091E
 %%      /PL4500-1
 %%      /PL4500-1E
 %%      /PL4500-1A
 %%      /PL4500-1O
 %%      /PL4500-1F
+%%      /PL450091-1
+%%      /PL450091-1F
 %%
 %% The slash at the beginning should be ignored.
 %%
@@ -489,10 +493,10 @@ pracelab_validation_examples() -> [
         ], privileges = member}
     },
     {
-        <<"/PL4500-18E">>,
+        <<"/PL450091-18E">>,
         #{groupType => role_holders},
         #idp_entitlement{idp = pracelab, path = [
-            #idp_group{type = role_holders, name = <<"PL4500-18">>, privileges = member}
+            #idp_group{type = role_holders, name = <<"PL450091-18">>, privileges = member}
         ], privileges = member}
     },
     {
