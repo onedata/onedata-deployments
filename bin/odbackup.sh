@@ -15,7 +15,14 @@ MPATH=${MPATH:-/tmp/mpath}                  # the base path for the ssh multiple
                                             #   the local host
 S3_CONF_PATH="${S3_CONF_PATH:-~/.s3cfg-prod-test}"      # path to the s3cmd config file on
                                                         #   the remote nodes
+
 S3_BUCKET="${S3_BUCKET:-s3://datahub-backups}"          # S3 bucket name
+
+# S3_BUCKET can contain additional path which should be used to place backups of different
+# clusters into their own dirs. This should be set when running the script like this:
+# S3_BUCKET=s3://datahub-backups/<cluster-name> odbackup <ip1> <ip2> ... 
+# The structure of the backups in s3 bucket is the following:
+# <cluster-name>/<date>_<IP>.tgz
 
 hosts=$*
 if [ """$hosts" == "" ]; then

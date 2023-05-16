@@ -5,8 +5,7 @@
 # This software is released under the MIT license cited in 'LICENSE.txt'
 
 # odcleanup.py removes from s3 old backups done by odbackup.sh
-# The structure of the backups in s3 bucket is the following:
-# <cluster-name>/<date>_<IP>.tgz
+# Fo more details about the structure of the backups see odbackup.sh
 # The script keeps by default the 60 most recent backups.
 # --number-of-backups arg can be used to change the default value.
 # The number of backup to keep can not be less than 10.
@@ -85,23 +84,15 @@ for key, objects in backups.items():
 objects_to_delete = []
 for key, objects in clusters.items():
     if len(objects) > args.number_of_backups:
-        for o in sorted(objects, key=lambda x: list(x.keys())[0])[:len(objects)-args.number_of_backups]:
-            for d in o[next(iter(o))]:
-                objects_to_delete.append({'Key': d['Key']})
+        for backup_object in sorted(objects, key=lambda x: list(x.keys())[0])[:len(objects)-args.number_of_backups]:
+            for dictionary in backup_object[next(iter(backup_object))]:
+                objects_to_delete.append({'Key': dictionary['Key']})
 
 if args.dry_run:
     print("Objects to delete:")
     print('==================')
-    for i in objects_to_delete:
-        print(i)
+    for obj in objects_to_delete:
+        print(obj)
 else:
     response = s3.delete_objects(Bucket=bucket_name, Delete={'Objects': objects_to_delete})
     print(response)
-
-quit()
-
-
-
-
-
-
