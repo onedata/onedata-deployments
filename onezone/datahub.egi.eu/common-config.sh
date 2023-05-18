@@ -7,5 +7,5 @@ SLAVE_3="zonedb02.cloud.plgrid.pl"
 
 ALL_NODES="${MASTER} ${SLAVE_1} ${SLAVE_2} ${SLAVE_3}"
 
-REPO_PATH="/home/ubuntu/onedata-deployments"
+REPO_PATH="/opt/onedata/onedata-deployments"
 BRANCH_NAME=`git rev-parse --abbrev-ref HEAD`
