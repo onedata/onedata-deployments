@@ -3,17 +3,18 @@ version: '2'
 services:
   node1.onezone:
     restart: always
-    image: onedata/onezone:20.02.18
+    image: onedata/onezone:21.02.1
     network_mode: host
     container_name: onezone
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       # Onezone persistence
       - "./data/persistence:/volumes/persistence"
-      # OpenID & SAML config
-      - "./data/secret/auth.config:/etc/oz_worker/auth.config"
       # Config overlay
       - "./data/configs/overlay.config:/etc/oz_worker/overlay.config"
+      # Secret config files
+      - "./data/secret/auth.config:/etc/oz_worker/auth.config" # OpenID & SAML config
+      - "./data/secret/mailer.config:/etc/oz_worker/config.d/mailer.config"
     ports:
       # dns server
       - "53:53"

@@ -38,11 +38,12 @@ Prepare 4 hosts with the following:
 3. Run `./pull-changes-on-all-nodes.sh` to checkout the latest commit on all nodes
 4. Place your auth.config in `./data/secret/auth.config` - see [OpenID & SAML] for more
 5. Place your emergency password in `./data/secret/emergency-password.txt`
-6. Run `./distribute-auth-config-and-em-pass.sh` to distribute the secret files 
-7. Verify that `data/configs/overlay.config` includes desired and up-to-date config
-8. Run `./onezone.sh start` **on all nodes** (see [onezone.sh]) 
-9. Visit `https://$HOST_IP:9443` and step through the installation wizard
-10. When prompted for emergency passphrase (1st step), provide the one from `data/secret/emergency-passphrase.txt`
+6. Place your mailer.config in `./data/secret/mailer.config` - see [app.config], section "Mailer configuration" for more
+7. Run `./distribute-secret-config.sh` to distribute the secret files 
+8. Verify that `data/configs/overlay.config` includes desired and up-to-date config
+9. Run `./onezone.sh start` **on all nodes** (see [onezone.sh]) 
+10. Visit `https://$HOST_IP:9443` and step through the installation wizard
+11. When prompted for emergency passphrase (1st step), provide the one from `data/secret/emergency-passphrase.txt`
 
 
 ## Maintaining the deployment
@@ -69,9 +70,9 @@ Currently, the backup script is called each day at about 1am. See `/etc/crontab`
 3. SSH to the master node (`ubuntu@onedata00.cloud.plgrid.pl`)
 4. Run `./pull-changes-on-all-nodes.sh` to checkout the latest commit on all nodes
 5. Pull the new Onezone docker on all nodes
-6. If auth.config needs change
-    * overwrite the one in `./data/secret/auth.config`
-    * run `./distribute-auth-config-and-em-pass.sh` to distribute it
+6. If auth.config or mailer.config needs change, from the master node:
+    * overwrite the desired files in `./data/secret/`
+    * run `./distribute-secret-config.sh` to distribute it
 7. While the system is running, create a backup **on all nodes**, e.g.
     * `sudo rsync -avzs ./data/persistence ~/backup-20191115-18.02.2` 
 8. Run `./onezone.sh stop` **on all nodes** (see [onezone.sh]) 
@@ -89,3 +90,4 @@ Please refer to the [documentation][onezone docs].
 [onezone.sh]: ../../README.md#onezone.sh
 [OpenID & SAML]: https://onedata.org/#/home/documentation/doc/administering_onedata/openid_saml_configuration/openid_saml_configuration_19_02.html
 [onezone docs]: https://onedata.org/#/home/documentation/doc/administering_onedata/onezone_tutorial.html
+[app.config]: https://github.com/onedata/oz-worker/blob/develop/rel/files/app.config
