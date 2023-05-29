@@ -30,6 +30,7 @@ case ${1} in
         EMERGENCY_PASSPHRASE=${EMERGENCY_PASSPHRASE} docker-compose up -d
         ;;
     stop)
+        docker exec -it onezone /root/onezone-stop-graceful.sh
         EMERGENCY_PASSPHRASE=${EMERGENCY_PASSPHRASE} docker-compose down
         ;;
     restart)
@@ -53,11 +54,11 @@ case ${1} in
         ;;
     worker-logs)
         # Displays oz-worker logs
-        docker exec -it onezone cat /var/log/oz_worker/info.log
+        docker exec -it onezone tail -n 1000 -f /var/log/oz_worker/info.log
         ;;
     panel-logs)
         # Displays oz-panel logs
-        docker exec -it onezone cat /var/log/oz_panel/info.log
+        docker exec -it onezone tail -n 1000 -f /var/log/oz_panel/info.log
         ;;
     emergency-passphrase)
         echo "${EMERGENCY_PASSPHRASE}"
