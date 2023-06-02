@@ -35,6 +35,7 @@ services:
       - "11211:11211"
       - "18091-18092:18091-18092"
       - "21100-21299:21100-21299"
+    stop_grace_period: 60m
     environment:
       ONEPANEL_DEBUG_MODE: "true" # if true prevents container exit on configuration error
       ONEPANEL_LOG_LEVEL: "info"
