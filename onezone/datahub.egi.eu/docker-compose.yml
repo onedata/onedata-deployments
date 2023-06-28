@@ -3,7 +3,7 @@ version: '2'
 services:
   node1.onezone:
     restart: always
-    image: onedata/onezone:21.02.1
+    image: onedata/onezone:21.02.2
     network_mode: host
     container_name: onezone
     volumes:
