@@ -60,6 +60,16 @@ case ${1} in
         # Displays oz-panel logs
         docker exec -it onezone tail -n 1000 -f /var/log/oz_panel/info.log
         ;;
+    worker-logat)
+        # Displays oz-worker logs and attaches to its console
+        docker exec -it onezone tail -n 1000 /var/log/oz_worker/info.log
+        docker exec -it onezone oz_worker attach-direct -f
+        ;;
+    panel-logat)
+        # Displays oz-panel logs and attaches to its console
+        docker exec -it onezone tail -n 1000 /var/log/oz_panel/info.log
+        docker exec -it onezone oz_panel attach-direct -f
+        ;;
     emergency-passphrase)
         echo "${EMERGENCY_PASSPHRASE}"
         ;;
