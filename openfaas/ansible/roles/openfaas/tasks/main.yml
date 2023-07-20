@@ -1,0 +1,45 @@
+    - name: Add openfaas chart repo
+      kubernetes.core.helm_repository:
+        name: openfaas
+        repo_url: " https://openfaas.github.io/faas-netes/"
+        force_update: true
+
+    - name: Create openfaas namespaces
+      kubernetes.core.k8s:
+        state: present
+        src: https://raw.githubusercontent.com/openfaas/faas-netes/master/namespaces.yml
+
+    - name: Copy openfaas-values.yaml
+      copy:
+        src: values.yaml
+        dest: openfaas-values.yaml
+
+    - name: Get current working directory
+      command: pwd
+      register: pwd_output
+
+    - name: Print current working directory
+      debug:
+        msg: "Current working directory: {{ pwd_output.stdout }}"
+
+    - name: Deploy latest version of OpenFaaS
+      kubernetes.core.helm:
+        name: openfaas
+        chart_ref: openfaas/openfaas
+        release_namespace: openfaas
+        values_files:
+          - openfaas-values.yaml
+        set_values:
+          - value: generateBasicAuth=true
+        # values: 
+        #   replicas: 2
+
+    - name: Copy openfaas-gateway-public.yaml
+      copy:
+        src: openfaas-gateway-public.yaml
+        dest: openfaas-gateway-public.yaml
+
+    - name: Create public gateway service
+      kubernetes.core.k8s:
+        state: present
+        src: openfaas-gateway-public.yaml

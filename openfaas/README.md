@@ -1,7 +1,19 @@
 # OpenFaaS deployments
 
-The procedure of deploying OpenFaaS is the following:
-- A kubernetess cluster is needed. In this deployment we use [kind](https://kind.sigs.k8s.io/). The following commands install docker and k8s cluster: 
+OpenFaaS and the components needed to run automation tasks in onedata
+can be easily installed with the supplied ansible playbooks - see
+[ansible/README.md](ansible/README.md). If you want to go the hard way and
+deploy openfaas manually read further.
+
+The procedure of deploying OpenFaaS includes installing/deploying of the following sofware:
+ - docker,
+ - k8s cluster - we use [kind](https://kind.sigs.k8s.io/) in this tutor,
+ - helm,
+ - openfass,
+ - openfaas-pod-status-monitor,
+ - openfaas-sidecar.
+Proceed with the commands in the following sections to install the mentioned software.
+
 ## Installing docker
 ```
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
@@ -20,7 +32,7 @@ sudo mv ./kind /usr/local/bin/kind
 ```
 ## Creating k8s cluster
 ```
-kind create cluster
+kind create cluster --config=kind-config.yaml
 kubectl cluster-info --context kind-kind
 ```
 

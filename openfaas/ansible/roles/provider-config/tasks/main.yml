@@ -1,0 +1,37 @@
+- name: Obtain openfaas password
+  shell: |
+    kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode
+  register: kube_output
+  delegate_to: openfaas
+
+- name: Place password in var
+  set_fact:
+    openfaas_admin_password: "{{kube_output.stdout}}"
+
+- name: Generate op-openfaas.config
+  become: yes
+  template:
+    src: openfaas-config.j2
+    dest: /opt/onedata/onedatify/oneprovider_conf/etc/op_worker/config.d/99-openfaas.config
+    mode: 0640
+    owner: 153
+    group: 150
+
+- name: Check for openfaas in layout.config
+  lineinfile:
+    name: /opt/onedata/onedatify/op-worker-overlay.config
+    search_string: "openfaas"
+    # line: "openfaas"
+    state: absent
+  check_mode: yes
+  register: out
+  failed_when: false
+
+- debug:
+    msg: "Openfaas configuration was found in /opt/onedata/onedatify/op-worker-overlay.config. It may override the ansible-generated config value. Please check it and restart oneprovider manually."
+  when: out.found
+
+- name: Restart oneprivider
+  become: yes 
+  shell: onedatify restart
+  when: not out.found

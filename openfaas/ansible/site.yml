@@ -1,0 +1,18 @@
+- hosts:
+  - localhost
+  any_errors_fatal: true
+  tasks:
+  - include_role:
+      name: common
+  - include_role:
+      name: openfaas
+  - include_role:
+      name: openfaas-pod-monitor
+  - include_role:
+      name: openfaas-sidecars
+- hosts:
+  - providers
+  any_errors_fatal: true
+  tasks:
+  - include_role:
+      name: provider-config

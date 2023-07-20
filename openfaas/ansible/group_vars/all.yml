@@ -1,0 +1,6 @@
+secret: your-secret
+serverUrl: poznan-ec23.datahub.egi.eu
+openfaas_host: 10.87.23.117
+openfaas_port: 8080
+openfaas_function_namespace: openfaas-fn
+sidecar_ns: onedata
