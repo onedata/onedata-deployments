@@ -57,21 +57,27 @@ helm upgrade openfaas --install openfaas/openfaas -f values.yaml --namespace ope
 k apply -f openfaas-svc-public.yaml
 cd ..
 ```
-## Creating pull image secret for docker.onedata.org
+## Creating pull image secret for docker.onedata.org (optional)
+In case images from private docker registries will be used secret should be added:
 ```
 docker login docker.onedata.org -u onedata-ro -p onedata-ro-password
 kubectl create secret generic regcred --from-file=.dockerconfigjson=/home/ubuntu/.docker/config.json --type=kubernetes.io/dockerconfigjson
 ```
-
-## Installing openfaas-pod-status-monitors
-    - Edit `openfaas-pod-status-monitor/values.yaml`. Replace serverURL and secret. Add image pull secret.
+Then we can use the secret in `values.yaml` files:
   ```
   imagePullSecrets:
     name: regcred
   ```
+Note that secrets are bound to namespaces. In order to copy the secret to another namespace use:
+```
+kubectl get secret regcred -o yaml | grep -v '^\s*namespace:\s' | kubectl apply --namespace=onedata -f -
+```
+The above command copies the secret from the `default` namespace to the namespace `onedata`. 
+
+## Installing openfaas-pod-status-monitors
+    - Edit `openfaas-pod-status-monitor/values.yaml`. Replace serverURL and secret. 
 ```
 kubectl create namespace onedata
-kubectl get secret regcred -o yaml | grep -v '^\s*namespace:\s' | kubectl apply --namespace=onedata -f -
 helm install openfaas-pod-status-monitor openfaas-pod-status-monitor -n onedata
 ```
 ## Installing openfaas-sidecars
@@ -118,35 +124,6 @@ Make sure that the releases have been deployed and the given pods are running.
 Now we are ready to configure the provider. First we need to obtain the openfaas password. 
 ```
 echo $(kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode)
-```
-## Patching queue-worker
-Edit openfaas/values.yaml and replace queueWorker specs with: 
-```
-queueWorker:
-  image: docker.onedata.org/openfaas-queue-worker:dev
-  replicas: 1
-  maxInflight: 20
-  gatewayInvoke: true
-  queueGroup: "faas"
-  ackWait: "6000000000s"
-  resources:
-    requests:
-      memory: "120Mi"
-      cpu: "50m"
-  maxRetryAttempts: "10"
-  maxRetryWait: "120s"
-  initialRetryWait: "10s"
-  httpRetryCodes: "429,502,500,504,408"
-```
-### Adding imagePullSecrets for openfaas
-```
-kubectl get secret regcred -o yaml | grep -v '^\s*namespace:\s' | kubectl apply --namespace=openfaas -f -
-kubectl patch serviceaccount default -n openfaas -p '{"imagePullSecrets": [{"name": "regcred"}]}'
-```
-### Upgrading openfaas
-```
-cd ~/openfaas
-helm upgrade openfaas --install openfaas/openfaas -f values.yaml --namespace openfaas --set generateBasicAuth=true --version 11.1.14
 ```
 ## Configuring oneprovider
 Place the obtained password and the rest of parameters in the file op-worker-overlay.config. The overlay should

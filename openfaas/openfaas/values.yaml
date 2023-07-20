@@ -1,4 +1,4 @@
-functionNamespace: openfaas-fn-plg-02  # Default namespace for functions
+functionNamespace: openfaas-fn  # Default namespace for functions
 
 # See https://www.openfaas.com/support for more
 openfaasPRO: false
@@ -107,7 +107,7 @@ operator:
 
 queueWorker:
   #image: ghcr.io/openfaas/queue-worker:0.13.0
-  image: docker.onedata.org/openfaas-queue-worker:dev
+  image: onedata/openfaas-queue-worker:0.13.0
   # Control HA of queue-worker
   replicas: 1
   # Control the concurrent invocations
