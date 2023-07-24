@@ -31,7 +31,7 @@
     msg: "Openfaas configuration was found in /opt/onedata/onedatify/op-worker-overlay.config. It may override the ansible-generated config value. Please check it and restart oneprovider manually."
   when: out.found
 
-- name: Restart oneprivider
+- name: Restart oneprovider
   become: yes 
   shell: onedatify restart
   when: not out.found

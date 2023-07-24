@@ -106,7 +106,6 @@ operator:
       cpu: "50m"
 
 queueWorker:
-  #image: ghcr.io/openfaas/queue-worker:0.13.0
   image: onedata/openfaas-queue-worker:0.13.0
   # Control HA of queue-worker
   replicas: 1
@@ -114,7 +113,7 @@ queueWorker:
   maxInflight: 20
   gatewayInvoke: true
   queueGroup: "faas"
-  ackWait: "6000000000s"
+  ackWait: "6000000000s"  # Ensure long-lasting jobs (>60s) are not aborted and redelivered in loop
   resources:
     requests:
       memory: "120Mi"

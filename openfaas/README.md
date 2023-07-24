@@ -1,18 +1,19 @@
 # OpenFaaS deployments
 
-OpenFaaS and the components needed to run automation tasks in onedata
+OpenFaaS and the components needed to run automation tasks in Onedata
 can be easily installed with the supplied ansible playbooks - see
-[ansible/README.md](ansible/README.md). If you want to go the hard way and
-deploy openfaas manually read further.
+[ansible/README.md](ansible/README.md). If you want to do it the hard way and
+deploy OpenFaaS manually, read on.
 
-The procedure of deploying OpenFaaS includes installing/deploying of the following sofware:
+The procedure of deploying OpenFaaS includes installing/deploying of the following 
+software and services:
  - docker,
- - k8s cluster - we use [kind](https://kind.sigs.k8s.io/) in this tutor,
+ - k8s cluster - [kind](https://kind.sigs.k8s.io/) is used in this tutorial,
  - helm,
- - openfass,
+ - openfaas,
  - openfaas-pod-status-monitor,
  - openfaas-sidecar.
-Proceed with the commands in the following sections to install the mentioned software.
+Proceed with the commands in the following sections to set it up.
 
 ## Installing docker
 ```
@@ -36,7 +37,7 @@ kind create cluster --config=kind-config.yaml
 kubectl cluster-info --context kind-kind
 ```
 
-## Configuring permisions for k8s
+## Configuring permissions for k8s
 ```
 kubectl create clusterrolebinding serviceaccounts-cluster-admin   --clusterrole=cluster-admin   --group=system:serviceaccounts
 
@@ -58,16 +59,16 @@ k apply -f openfaas-svc-public.yaml
 cd ..
 ```
 ## Creating pull image secret for docker.onedata.org (optional)
-In case images from private docker registries will be used secret should be added:
+In case images from a private docker registry are to be used, an image pull secret should be added:
 ```
 docker login docker.onedata.org -u onedata-ro -p onedata-ro-password
 kubectl create secret generic regcred --from-file=.dockerconfigjson=/home/ubuntu/.docker/config.json --type=kubernetes.io/dockerconfigjson
 ```
-Then we can use the secret in `values.yaml` files:
-  ```
-  imagePullSecrets:
-    name: regcred
-  ```
+Then use the secret in `values.yaml` files:
+```
+imagePullSecrets:
+name: regcred
+```
 Note that secrets are bound to namespaces. In order to copy the secret to another namespace use:
 ```
 kubectl get secret regcred -o yaml | grep -v '^\s*namespace:\s' | kubectl apply --namespace=onedata -f -
@@ -75,7 +76,9 @@ kubectl get secret regcred -o yaml | grep -v '^\s*namespace:\s' | kubectl apply 
 The above command copies the secret from the `default` namespace to the namespace `onedata`. 
 
 ## Installing openfaas-pod-status-monitors
-    - Edit `openfaas-pod-status-monitor/values.yaml`. Replace serverURL and secret. 
+
+Edit `openfaas-pod-status-monitor/values.yaml`. Replace serverURL and secret. 
+
 ```
 kubectl create namespace onedata
 helm install openfaas-pod-status-monitor openfaas-pod-status-monitor -n onedata
@@ -120,8 +123,8 @@ helm upgrade -i -n openfaas-fn -f values.yaml sidecarinjector onedata/sidecarinj
 cd ..
 ```
 ## Obtaining openfaas creds
-Make sure that the releases have been deployed and the given pods are running. 
-Now we are ready to configure the provider. First we need to obtain the openfaas password. 
+Make sure that the releases have been deployed and the corresponding pods are running. 
+Now, the Oneprovider can be configured. First, obtain the openfaas password: 
 ```
 echo $(kubectl -n openfaas get secret basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode)
 ```
@@ -133,7 +136,7 @@ look similar to this:
     {op_worker, [
         {openfaas_host, "10.0.0.2"},
         {openfaas_port, 8080},
-        {openfaas_function_namespace, "openfaas-fn-plg-02"},
+        {openfaas_function_namespace, "openfaas-fn"},
         {openfaas_admin_username, "admin"},
         {openfaas_admin_password, "XXXXXXXXXX"},
         {openfaas_function_constraints, []},
