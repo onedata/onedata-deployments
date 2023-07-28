@@ -6,4 +6,5 @@ kubectl apply -f https://raw.githubusercontent.com/openfaas/faas-netes/master/na
 helm upgrade openfaas --install openfaas/openfaas -f values.yaml --namespace openfaas --set generateBasicAuth=true --version 11.1.14
 k apply -f openfaas-svc-public.yaml
 ```
-Follow the instructions outputed by `helm upgrade` to check that openfaas has been depoloyed with success
+Follow the instructions from the `helm upgrade` output to check that openfaas 
+has been deployed with success.
