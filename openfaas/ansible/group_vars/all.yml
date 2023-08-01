@@ -1,5 +1,5 @@
 # pod-status-monitor will use this secret to gain access to oneprovider
-secret: your-secret
+openfaas_activity_feed_secret: your-secret
 
 # oneprovider hostname - should be accessible by openfaas
 oneprovider_hostname: poznan-ec23.datahub.egi.eu

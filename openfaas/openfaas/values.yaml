@@ -110,7 +110,6 @@ queueWorker:
   # Control HA of queue-worker
   replicas: 1
   # Control the concurrent invocations
-  maxInflight: 20
   gatewayInvoke: true
   queueGroup: "faas"
   ackWait: "6000000000s"  # Ensure long-lasting jobs (>60s) are not aborted and redelivered in loop
@@ -123,6 +122,10 @@ queueWorker:
   maxRetryWait: "120s"
   initialRetryWait: "10s"
   httpRetryCodes: "429,502,500,504,408"
+
+queueWorkerPro:  
+  # Tune the concurrency of function invocations
+  maxInflight: 5
   
 # monitoring and auto-scaling components
 # both components

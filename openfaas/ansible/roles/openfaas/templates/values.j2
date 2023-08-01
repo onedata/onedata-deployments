@@ -123,6 +123,10 @@ queueWorker:
   initialRetryWait: "10s"
   httpRetryCodes: "429,502,500,504,408"
 
+queueWorkerPro:  
+  # Tune the concurrency of function invocations
+  maxInflight: 5
+  
 # monitoring and auto-scaling components
 # both components
 prometheus:
@@ -133,10 +137,6 @@ prometheus:
       memory: "512Mi"
   annotations: {}
 
-queueWorkerPro:  
-  # Tune the concurrency of function invocations
-  maxInflight: 5
-  
 alertmanager:
   #image: prom/alertmanager:v0.18.0
   create: true
