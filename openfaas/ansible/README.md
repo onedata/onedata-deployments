@@ -3,7 +3,10 @@
 The ansible scripts in this directory set up the OpenFaaS automation engine for Oneprovider.
 They deploy a one-node k8s cluster, OpenFaaS, the necessary companions, and configures the Oneprovider.
 
-NOTE: During the process, the Oneprovider will be restarted by the scripts.
+> NOTE: During the process, the Oneprovider will be restarted by the scripts.
+
+> NOTE: The ansible scripts are responsible for the first deployment of the OpenFaaS service
+> and do not cover the continuous maintenance of the services.
 
 It is assumed that OpenFaaS is installed on a dedicated VM (openfaas-vm). 
 The scripts can be started on the same or different VM (ansible-vm). 

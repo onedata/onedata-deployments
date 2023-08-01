@@ -49,15 +49,8 @@ tar zxvf helm-v3.6.3-linux-amd64.tar.gz
 sudo mv linux-amd64/helm /usr/local/bin/helm
 ```
 ## Installing OpenFaaS
-```
-cd openfaas
-helm repo add openfaas https://openfaas.github.io/faas-netes/
-helm repo update
-kubectl apply -f https://raw.githubusercontent.com/openfaas/faas-netes/master/namespaces.yml
-helm upgrade openfaas --install openfaas/openfaas -f values.yaml --namespace openfaas --set generateBasicAuth=true --version 11.1.14
-k apply -f openfaas-svc-public.yaml
-cd ..
-```
+Follow [this](openfaas/README.md) guide.
+
 ## Creating pull image secret for docker.onedata.org (optional)
 In case images from a private docker registry are to be used, an image pull secret should be added:
 ```
@@ -77,51 +70,12 @@ The above command copies the secret from the `default` namespace to the namespac
 
 ## Installing openfaas-pod-status-monitors
 
-Edit `openfaas-pod-status-monitor/values.yaml`. Replace serverURL and secret. 
+Follow [this](openfaas-pod-status-monitor/README.md) guide.
 
-```
-kubectl create namespace onedata
-helm install openfaas-pod-status-monitor openfaas-pod-status-monitor -n onedata
-```
 ## Installing openfaas-sidecars
-### Generate certs
 
-  ```
-  cd openfaas-sidecar
-  openssl genrsa -out ca.key 2048
-  export COMMON_NAME=sidecarinjector.openfaas-fn.svc
-  openssl  req -x509 -new -nodes -key ca.key -subj "/CN=${COMMON_NAME}" \
-      -addext "subjectAltName = DNS:${COMMON_NAME}" -days 3650 -reqexts v3_req \
-      -extensions v3_ca -out ca-ns-sidecarinjector.crt
-  cat ca-ns-sidecarinjector.crt | base64 -w 0 > caBundle
-  ```
-### prepare values.yaml files
-  ```
-  vi values.yaml # copy-paste key, cert and caBundle
-  ```
-The values.yaml file should look like this:
-  ```
-appname: sidecarinjector
-namespace: openfaas-fn
+Follow [this](openfaas-sidecar/README.md) guide.
 
-caBundle:
-  crt: |-
-    <content of ca-ns-sidecarinjector.crt>
-  key: |-
-    <content of ca.key>
-  caBundle: <content of caBundle>
-  ```
-### Preparing function namespaces
-```
-## TO-CHECK: This should not be necessary for the default openfaas
-## function namespace - openfaas-fn
-kubectl label ns openfaas-fn sidecar-injection=enabled --overwrite
-```
-### Deploying charts
-```
-helm upgrade -i -n openfaas-fn -f values.yaml sidecarinjector onedata/sidecarinjector
-cd ..
-```
 ## Obtaining openfaas creds
 Make sure that the releases have been deployed and the corresponding pods are running. 
 Now, the Oneprovider can be configured. First, obtain the openfaas password: 

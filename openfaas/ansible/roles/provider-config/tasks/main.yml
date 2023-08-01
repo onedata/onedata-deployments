@@ -21,7 +21,6 @@
   lineinfile:
     name: /opt/onedata/onedatify/op-worker-overlay.config
     search_string: "openfaas"
-    # line: "openfaas"
     state: absent
   check_mode: yes
   register: out

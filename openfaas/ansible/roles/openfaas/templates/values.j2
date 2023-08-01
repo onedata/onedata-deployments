@@ -1,4 +1,4 @@
-functionNamespace: openfaas-fn  # Default namespace for functions
+functionNamespace: {{ openfaas_function_namespace }}  # Default namespace for functions
 
 # See https://www.openfaas.com/support for more
 openfaasPRO: false
@@ -110,7 +110,6 @@ queueWorker:
   # Control HA of queue-worker
   replicas: 1
   # Control the concurrent invocations
-  maxInflight: 20
   gatewayInvoke: true
   queueGroup: "faas"
   ackWait: "6000000000s"  # Ensure long-lasting jobs (>60s) are not aborted and redelivered in loop
@@ -134,6 +133,10 @@ prometheus:
       memory: "512Mi"
   annotations: {}
 
+queueWorkerPro:  
+  # Tune the concurrency of function invocations
+  maxInflight: 5
+  
 alertmanager:
   #image: prom/alertmanager:v0.18.0
   create: true

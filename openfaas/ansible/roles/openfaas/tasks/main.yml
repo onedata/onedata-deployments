@@ -4,14 +4,19 @@
         repo_url: " https://openfaas.github.io/faas-netes/"
         force_update: true
 
+    - name: Generate namespaces.yml from template
+      template:
+        src: namespaces.j2
+        dest: openfaas-namespaces.yml
+        
     - name: Create openfaas namespaces
       kubernetes.core.k8s:
         state: present
-        src: https://raw.githubusercontent.com/openfaas/faas-netes/master/namespaces.yml
+        src: openfaas-namespaces.yml
 
     - name: Copy openfaas-values.yaml
-      copy:
-        src: values.yaml
+      template:
+        src: values.j2
         dest: openfaas-values.yaml
 
     - name: Get current working directory
@@ -26,17 +31,15 @@
       kubernetes.core.helm:
         name: openfaas
         chart_ref: openfaas/openfaas
-        release_namespace: openfaas
+        release_namespace: "{{openfaas_namespace}}"
         values_files:
           - openfaas-values.yaml
         set_values:
           - value: generateBasicAuth=true
-        # values: 
-        #   replicas: 2
 
     - name: Copy openfaas-gateway-public.yaml
-      copy:
-        src: openfaas-gateway-public.yaml
+      template:
+        src: openfaas-gateway-public.j2
         dest: openfaas-gateway-public.yaml
 
     - name: Create public gateway service

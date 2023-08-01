@@ -1,4 +1,5 @@
 This directory contains the openfaas-pod-status-monitor charts.
+Before deploying edit `openfaas-pod-status-monitor/values.yaml`. Replace serverURL and secret. 
 In order to deploy it run:
 
 ```

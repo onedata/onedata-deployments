@@ -1,6 +1,28 @@
+# pod-status-monitor will use this secret to gain access to oneprovider
 secret: your-secret
-serverUrl: poznan-ec23.datahub.egi.eu
+
+# oneprovider hostname - should be accessible by openfaas
+oneprovider_hostname: poznan-ec23.datahub.egi.eu
+
+# IP address of openfaas - should be accessible by oneprovider
 openfaas_host: 10.87.23.117
+
+# The port to access openfaas service - should be accessible by oneprovider
 openfaas_port: 8080
+
+# pods running functions will be started in this namespace
 openfaas_function_namespace: openfaas-fn
-sidecar_ns: onedata
+
+# the namespace for openfaas system pods 
+openfaas_namespace: openfaas
+
+# the namespace where the sidecar injector will be run, can be arbitrary
+sidecar_injector_namespace: onedata
+
+# the namespace where the pod status monitor will be run, can be arbitrary
+pod_status_monitor_namespace: onedata
+
+# there may be only one sidecar injector service on a k8s cluster, if you are deploying
+# the second or next OpenFaaS machinery on the same cluster, set this option to true
+# so that another injector is not deployed
+sidecar_injector_already_deployed: false

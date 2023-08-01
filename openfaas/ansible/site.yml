@@ -1,5 +1,5 @@
 - hosts:
-  - localhost
+  - openfaas
   any_errors_fatal: true
   tasks:
   - include_role:
@@ -11,7 +11,7 @@
   - include_role:
       name: openfaas-sidecars
 - hosts:
-  - providers
+  - oneprovider
   any_errors_fatal: true
   tasks:
   - include_role:

@@ -7,14 +7,14 @@ imagePullPolicy: IfNotPresent
 serviceType: ClusterIP
 
 # Oneprovider address
-serverUrl: "{{serverUrl}}"
+serverUrl: "{{oneprovider_hostname}}"
 
-# The secret usd to authenticated with Onezone.
+# The secret used to authenticate with Onezone.
 # Has to be configured in onezone app/overlay.conf
 secret: "{{secret}}"
 
 # Namespaces with pods that will be monitored, eg. openfaas-functions
-namespace: "openfaas-fn"
+namespace: "{{openfaas_function_namespace}}"
 
 # The generalization of nodeSelector.
 # Allows for more fine grained controls over which

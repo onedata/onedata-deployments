@@ -1,3 +1,6 @@
+- name: Deploy sidecarinjector
+  when: not sidecar_injector_already_deployed
+  block:
     # Using the community.crypto.x509_certificate did not work:
     #  it could not find cryptography library (>=1.6) despite version 2.8 is installed
     # - name: Generate a Self Signed OpenSSL certificate
@@ -6,9 +9,9 @@
     #     privatekey_path: ./ansible.com.pem
     #     csr_path: ./ansible.com.csr
     #     provider: selfsigned
-    - name: Generate a Self Signed OpenSSL certificate
+    - name: Generate a Self Signed OpenSSL cebrtificate
       vars:
-        cn: sidecarinjector.{{sidecar_ns}}.svc
+        cn: sidecarinjector.{{sidecar_injector_namespace}}.svc
       shell: |
         openssl genrsa -out /tmp/sidecar-injector.key 2048
         openssl  req -x509 -new -nodes -key /tmp/sidecar-injector.key -subj "/CN={{cn}}" \
@@ -27,12 +30,20 @@
         src: values.j2
         dest: openfaas-sidecar-values.yaml
 
-    # kubectl label ns openfaas-fn sidecar-injection=enabled --overwrite
+    - name: Remove tmp files
+      file:
+        path: "{{item}}"
+        state: absent
+      with_items:
+        - /tmp/sidecar-injector.key
+        - /tmp/sidecar-injector.crt
+        - /tmp/sidecar-injector.bundle
+        
     - name: add label to existing namespace
       kubernetes.core.k8s:
         state: patched
         kind: Namespace
-        name: openfaas-fn
+        name: "{{openfaas_function_namespace}}"
         definition:
           metadata:
             labels:
@@ -48,6 +59,6 @@
       kubernetes.core.helm:
         name: sidecarinjector
         chart_ref: onedata/sidecarinjector
-        release_namespace: "{{sidecar_ns}}"
+        release_namespace: "{{sidecar_injector_namespace}}"
         values_files:
           - openfaas-sidecar-values.yaml

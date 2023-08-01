@@ -1,17 +1,6 @@
-    # - name: Add openfaas chart repo
-    #   kubernetes.core.helm_repository:
-    #     name: openfaas
-    #     repo_url: " https://openfaas.github.io/faas-netes/"
-    #     force_update: true
-
-    # - name: Create openfaas namespaces
-    #   kubernetes.core.k8s:
-    #     state: present
-    #     src: https://raw.githubusercontent.com/openfaas/faas-netes/master/namespaces.yml
-
-    - name: Create onedata namespace
+    - name: Create namespace
       kubernetes.core.k8s:
-        name: onedata
+        name: "{{pod_status_monitor_namespace}}"
         api_version: v1
         kind: Namespace
         state: present
@@ -29,11 +18,6 @@
         src: values.j2
         dest: openfaas-pod-status-monitor-values.yaml
 
-
-    # - name: Print current working directory
-    #   debug:
-    #     msg: "Current working directory: {{ pwd_output.stdout }}"
-
     - name: Deploy openfaas-pod-status-monitor
       kubernetes.core.helm:
         name: openfaas-pod-status-monitor
@@ -41,7 +25,3 @@
         release_namespace: onedata
         values_files:
           - openfaas-pod-status-monitor-values.yaml
-    #     set_values:
-    #       - value: generateBasicAuth=true
-    #     # values: 
-    #     #   replicas: 2

@@ -7,7 +7,7 @@ and lambda results streamer via a file.
 
 ```
 openssl genrsa -out ca.key 2048
-export COMMON_NAME=sidecarinjector.openfaas-fn.svc
+export COMMON_NAME=sidecarinjector.onedata.svc
 openssl  req -x509 -new -nodes -key ca.key -subj "/CN=${COMMON_NAME}" \
   -addext "subjectAltName = DNS:${COMMON_NAME}" -days 3650 -reqexts v3_req \
   -extensions v3_ca -out ca-ns-sidecarinjector.crt
@@ -22,7 +22,7 @@ vi values.yaml  # copy-paste key, cert and caBundle
 The values.yaml file should look like this:
 ```
 appname: sidecarinjector
-namespace: openfaas-fn
+namespace: onedata
 
 caBundle:
   crt: |-
@@ -39,6 +39,6 @@ kubectl label ns openfaas-fn sidecar-injection=enabled --overwrite
 
 ## Deploy charts
 ```
-helm upgrade -i -n openfaas-fn -f values.yaml sidecarinjector onedata/sidecarinjector
+helm upgrade -i -n onedata -f values.yaml sidecarinjector onedata/sidecarinjector
 cd ..
 ```
