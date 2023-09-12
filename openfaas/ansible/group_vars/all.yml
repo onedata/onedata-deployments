@@ -1,28 +1,46 @@
+# kind cluster port mapping config
+kind_first_node_port: 31115
+kind_first_port: 8083
+kind_number_of_ports: 2
+kind_cluster_name: k2
+
 # pod-status-monitor will use this secret to gain access to oneprovider
 openfaas_activity_feed_secret: your-secret
 
 # oneprovider hostname - should be accessible by openfaas
-oneprovider_hostname: poznan-ec23.datahub.egi.eu
+oneprovider_hostname: bari.demo.onedata.org
 
 # IP address of openfaas - should be accessible by oneprovider
 openfaas_host: 10.87.23.117
 
 # The port to access openfaas service - should be accessible by oneprovider
-openfaas_port: 8080
+# It should be in the range:
+# {{kind_first_port}}...{{kind_first_port}}+{{kind_number_of_ports}}-1
+openfaas_port: 8083
+
+# The nodePort to be used by openfaas service. It should be in the range
+# 30000-32767. Select different ports for different instances of openfaas
+# when installing multiple openfaas instances on the same k8s cluster.
+# It should be in the range:
+# {{kind_first_node_port}}...{{kind_first_node_port}}+{{kind_number_of_ports}}-1
+openfaas_node_port: 31115
+
+# When deploying the second instance od openfaas set this to true
+openfaas_create_crds: false
 
 # pods running functions will be started in this namespace
-openfaas_function_namespace: openfaas-fn
+openfaas_function_namespace: openfaas-fn-bari
 
 # the namespace for openfaas system pods 
-openfaas_namespace: openfaas
+openfaas_namespace: openfaas-bari
 
 # the namespace where the sidecar injector will be run, can be arbitrary
-sidecar_injector_namespace: onedata
+sidecar_injector_namespace: onedata-test
 
 # the namespace where the pod status monitor will be run, can be arbitrary
-pod_status_monitor_namespace: onedata
+pod_status_monitor_namespace: onedata-bari
 
 # there may be only one sidecar injector service on a k8s cluster, if you are deploying
 # the second or next OpenFaaS machinery on the same cluster, set this option to true
 # so that another injector is not deployed
-sidecar_injector_already_deployed: false
+sidecar_injector_already_deployed: true

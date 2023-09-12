@@ -1,6 +1,23 @@
+- name: add label to existing namespace
+  kubernetes.core.k8s:
+    state: patched
+    kind: Namespace
+    name: "{{openfaas_function_namespace}}"
+    definition:
+      metadata:
+        labels:
+          sidecar-injection: enabled
+
 - name: Deploy sidecarinjector
   when: not sidecar_injector_already_deployed
   block:
+    - name: Create namespace
+      kubernetes.core.k8s:
+        name: "{{sidecar_injector_namespace}}"
+        api_version: v1
+        kind: Namespace
+        state: present
+
     # Using the community.crypto.x509_certificate did not work:
     #  it could not find cryptography library (>=1.6) despite version 2.8 is installed
     # - name: Generate a Self Signed OpenSSL certificate
@@ -39,16 +56,6 @@
         - /tmp/sidecar-injector.crt
         - /tmp/sidecar-injector.bundle
         
-    - name: add label to existing namespace
-      kubernetes.core.k8s:
-        state: patched
-        kind: Namespace
-        name: "{{openfaas_function_namespace}}"
-        definition:
-          metadata:
-            labels:
-              sidecar-injection: enabled
-
     - name: Add onedata chart repo
       kubernetes.core.helm_repository:
         name: onedata

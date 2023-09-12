@@ -22,6 +22,6 @@
       kubernetes.core.helm:
         name: openfaas-pod-status-monitor
         chart_ref: ./openfaas-pod-status-monitor
-        release_namespace: onedata
+        release_namespace: "{{pod_status_monitor_namespace}}"
         values_files:
           - openfaas-pod-status-monitor-values.yaml

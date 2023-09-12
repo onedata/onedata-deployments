@@ -29,3 +29,27 @@ Edit `hosts` and place the appropriate IP addresses.
 ```
 ansible-playbook -i hosts site.yml
 ```
+
+## Installing another instance of openfaas in the same kind cluster
+
+The procedure is generally the same as installing the first instance but some variables in 
+`group_vars/all.yml` 
+need to be modified. See the comments in this file. Another important thing is that we need to 
+reserve enough ports in the kind cluster in advance - when running the first deployment. 
+This cannot be done later with this ansible scripts.
+
+### Modifying `group_vars/all.yml`
+Modify the following variables according to the infile comments:
+- oneprovider_hostname
+- openfaas_port
+- openfaas_node_port
+- openfaas_create_crds
+- openfaas_function_namespace
+- pod_status_monitor_namespace
+- sidecar_injector_already_deployed
+
+### Modifying ansible inventory file `hosts`
+Modify the provider IP address in the `oneprovider` group.
+
+### Running ansible
+The same command as for the first instance should be used.
