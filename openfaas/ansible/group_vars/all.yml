@@ -2,13 +2,13 @@
 # It necessary to have openfaas ports accesible from outside.
 
 # This is the first k8s nodePort number to be used. It concerns the container as kind runs the cluster in a docker container.   
-kind_first_node_port: 31115
+kind_first_node_port: 31112
 
 # This is the first port used for accessing openfass instances from outside. It concerns the VM itself.
-kind_first_port: 8083
+kind_first_port: 8080
 
 # If you plan to add few openfaas instances set the value to the number of planned openfaas instances. 
-kind_number_of_ports: 2
+kind_number_of_ports: 1
 
 # Name of the kind cluster.
 kind_cluster_name: kind
@@ -26,14 +26,14 @@ openfaas_host: 10.87.23.117
 # The port to access openfaas service - should be accessible by oneprovider.
 # It should be in the range:
 # {{kind_first_port}}...{{kind_first_port}}+{{kind_number_of_ports}}-1
-openfaas_port: 8083
+openfaas_port: 8080
 
 # The nodePort to be used by openfaas service. It should be in the range
 # 30000-32767. Select different ports for different instances of openfaas
 # when installing multiple openfaas instances on the same k8s cluster.
 # It should be in the range:
 # {{kind_first_node_port}}...{{kind_first_node_port}}+{{kind_number_of_ports}}-1
-openfaas_node_port: 31115
+openfaas_node_port: 31112
 
 # When deploying the second instance od openfaas set this to false.
 openfaas_create_crds: true
