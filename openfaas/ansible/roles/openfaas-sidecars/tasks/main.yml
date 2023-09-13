@@ -9,7 +9,7 @@
           sidecar-injection: enabled
 
 - name: Deploy sidecarinjector
-  when: not sidecar_injector_already_deployed
+  when: openfaas_first_instance
   block:
     - name: Create namespace
       kubernetes.core.k8s:

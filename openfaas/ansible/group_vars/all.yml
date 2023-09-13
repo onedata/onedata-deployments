@@ -14,6 +14,10 @@ kind_number_of_ports: 1
 kind_cluster_name: kind
 
 
+# IMPORTANT: when deploying the second or further instance of OpenFaaS on the same host, MUST be set to false.
+# Impacts some of the machinery (e.g sidecar injector) that can only be deployed once on the same k8s cluster.
+openfaas_first_instance: true
+
 # pod-status-monitor will use this secret to gain access to oneprovider.
 openfaas_activity_feed_secret: your-secret
 
@@ -35,9 +39,6 @@ openfaas_port: 8080
 # {{kind_first_node_port}}...{{kind_first_node_port}}+{{kind_number_of_ports}}-1
 openfaas_node_port: 31112
 
-# When deploying the second instance od openfaas set this to false.
-openfaas_create_crds: true
-
 # Pods running functions will be started in this namespace.
 openfaas_function_namespace: openfaas-fn
 
@@ -50,7 +51,3 @@ sidecar_injector_namespace: openfaas-sidecar-injector
 # The namespace where the pod status monitor will be run, can be arbitrary.
 pod_status_monitor_namespace: openfaas-status-monitor
 
-# There may be only one sidecar injector service on a k8s cluster. If you are deploying
-# the second or next OpenFaaS machinery on the same cluster, set this option to true
-# so that another injector is not deployed.
-sidecar_injector_already_deployed: false

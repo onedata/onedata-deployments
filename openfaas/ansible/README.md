@@ -50,10 +50,9 @@ Modify the following variables according to the infile comments:
 - oneprovider_hostname
 - openfaas_port
 - openfaas_node_port
-- openfaas_create_crds
 - openfaas_function_namespace
 - pod_status_monitor_namespace
-- sidecar_injector_already_deployed
+- openfaas_first_instance
 
 ### Modifying ansible inventory file `hosts`
 Modify the provider IP address in the `oneprovider` group.
