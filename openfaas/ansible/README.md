@@ -1,12 +1,14 @@
 # Openfaas automation for Oneprovider
 
-The ansible scripts in this directory set up the OpenFaaS automation engine for Oneprovider.
-They deploy a one-node k8s cluster, OpenFaaS, the necessary companions, and configures the Oneprovider.
+The ansible scripts in this directory set up the OpenFaaS automation
+engine for Oneprovider.  They deploy a one-node k8s cluster, OpenFaaS,
+the necessary companions, and configures the Oneprovider.
 
 > NOTE: During the process, the Oneprovider will be restarted by the scripts.
 
-> NOTE: The ansible scripts are responsible for the first deployment of the OpenFaaS service
-> and do not cover the continuous maintenance of the services.
+> NOTE: The ansible scripts are responsible for the first deployment
+> of the OpenFaaS service and do not cover the continuous maintenance
+> of the services.
 
 It is assumed that OpenFaaS is installed on a dedicated VM (openfaas-vm). 
 The scripts can be started on the same or different VM (ansible-vm). 
@@ -32,11 +34,12 @@ ansible-playbook -i hosts site.yml
 
 ## Installing another instance of openfaas in the same kind cluster
 
-The procedure is generally the same as installing the first instance but some variables in 
-`group_vars/all.yml` 
-need to be modified. See the comments in this file. Another important thing is that we need to 
-reserve enough ports in the kind cluster in advance - when running the first deployment. 
-This cannot be done later with this ansible scripts.
+The procedure is generally the same as installing the first instance
+but some variables in `group_vars/all.yml` need to be modified. See
+the comments in this file. Another important thing is that we need to
+reserve enough ports in the kind cluster in advance - when running the
+first deployment.  This cannot be done later with this ansible
+scripts.
 
 ### Modifying `group_vars/all.yml`
 Modify the following variables according to the infile comments:

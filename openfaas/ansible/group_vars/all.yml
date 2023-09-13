@@ -25,8 +25,8 @@ openfaas_port: 8083
 # {{kind_first_node_port}}...{{kind_first_node_port}}+{{kind_number_of_ports}}-1
 openfaas_node_port: 31115
 
-# When deploying the second instance od openfaas set this to true
-openfaas_create_crds: false
+# When deploying the second instance od openfaas set this to false
+openfaas_create_crds: true
 
 # pods running functions will be started in this namespace
 openfaas_function_namespace: openfaas-fn-bari
@@ -43,4 +43,4 @@ pod_status_monitor_namespace: onedata-bari
 # there may be only one sidecar injector service on a k8s cluster, if you are deploying
 # the second or next OpenFaaS machinery on the same cluster, set this option to true
 # so that another injector is not deployed
-sidecar_injector_already_deployed: true
+sidecar_injector_already_deployed: false
