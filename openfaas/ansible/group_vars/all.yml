@@ -8,7 +8,7 @@ kind_cluster_name: k2
 openfaas_activity_feed_secret: your-secret
 
 # oneprovider hostname - should be accessible by openfaas
-oneprovider_hostname: bari.demo.onedata.org
+oneprovider_hostname: myprovider.demo.onedata.org
 
 # IP address of openfaas - should be accessible by oneprovider
 openfaas_host: 10.87.23.117
@@ -29,16 +29,16 @@ openfaas_node_port: 31115
 openfaas_create_crds: true
 
 # pods running functions will be started in this namespace
-openfaas_function_namespace: openfaas-fn-bari
+openfaas_function_namespace: openfaas-fn
 
 # the namespace for openfaas system pods 
-openfaas_namespace: openfaas-bari
+openfaas_namespace: openfaas
 
 # the namespace where the sidecar injector will be run, can be arbitrary
-sidecar_injector_namespace: onedata-test
+sidecar_injector_namespace: openfaas-sidecar-injector
 
 # the namespace where the pod status monitor will be run, can be arbitrary
-pod_status_monitor_namespace: onedata-bari
+pod_status_monitor_namespace: openfaas-status-monitor
 
 # there may be only one sidecar injector service on a k8s cluster, if you are deploying
 # the second or next OpenFaaS machinery on the same cluster, set this option to true
