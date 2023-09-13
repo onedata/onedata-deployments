@@ -10,8 +10,8 @@ kind_first_port: 8083
 # If you plan to add few openfaas instances set the value to the number of planned openfaas instances. 
 kind_number_of_ports: 2
 
-# Name of the kind cluster. You can add more kind cluster by chaning this name.
-kind_cluster_name: k2
+# Name of the kind cluster.
+kind_cluster_name: kind
 
 
 # pod-status-monitor will use this secret to gain access to oneprovider.
