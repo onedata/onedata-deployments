@@ -1,19 +1,29 @@
-# kind cluster port mapping config
+# The following "kind"-prefixed variables configure kind cluster and its port mapping.
+# It necessary to have openfaas ports accesible from outside.
+
+# This is the first k8s nodePort number to be used. It concerns the container as kind runs the cluster in a docker container.   
 kind_first_node_port: 31115
+
+# This is the first port used for accessing openfass instances from outside. It concerns the VM itself.
 kind_first_port: 8083
+
+# If you plan to add few openfaas instances set the value to the number of planned openfaas instances. 
 kind_number_of_ports: 2
+
+# Name of the kind cluster. You can add more kind cluster by chaning this name.
 kind_cluster_name: k2
 
-# pod-status-monitor will use this secret to gain access to oneprovider
+
+# pod-status-monitor will use this secret to gain access to oneprovider.
 openfaas_activity_feed_secret: your-secret
 
-# oneprovider hostname - should be accessible by openfaas
+# Oneprovider hostname - should be accessible by openfaas.
 oneprovider_hostname: myprovider.demo.onedata.org
 
-# IP address of openfaas - should be accessible by oneprovider
+# IP address of openfaas - should be accessible by oneprovider.
 openfaas_host: 10.87.23.117
 
-# The port to access openfaas service - should be accessible by oneprovider
+# The port to access openfaas service - should be accessible by oneprovider.
 # It should be in the range:
 # {{kind_first_port}}...{{kind_first_port}}+{{kind_number_of_ports}}-1
 openfaas_port: 8083
@@ -25,22 +35,22 @@ openfaas_port: 8083
 # {{kind_first_node_port}}...{{kind_first_node_port}}+{{kind_number_of_ports}}-1
 openfaas_node_port: 31115
 
-# When deploying the second instance od openfaas set this to false
+# When deploying the second instance od openfaas set this to false.
 openfaas_create_crds: true
 
-# pods running functions will be started in this namespace
+# Pods running functions will be started in this namespace.
 openfaas_function_namespace: openfaas-fn
 
-# the namespace for openfaas system pods 
+# The namespace for openfaas system pods. 
 openfaas_namespace: openfaas
 
-# the namespace where the sidecar injector will be run, can be arbitrary
+# The namespace where the sidecar injector will be run, can be arbitrary.
 sidecar_injector_namespace: openfaas-sidecar-injector
 
-# the namespace where the pod status monitor will be run, can be arbitrary
+# The namespace where the pod status monitor will be run, can be arbitrary.
 pod_status_monitor_namespace: openfaas-status-monitor
 
-# there may be only one sidecar injector service on a k8s cluster, if you are deploying
+# There may be only one sidecar injector service on a k8s cluster. If you are deploying
 # the second or next OpenFaaS machinery on the same cluster, set this option to true
-# so that another injector is not deployed
+# so that another injector is not deployed.
 sidecar_injector_already_deployed: false

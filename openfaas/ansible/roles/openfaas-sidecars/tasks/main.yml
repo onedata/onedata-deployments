@@ -1,4 +1,4 @@
-- name: add label to existing namespace
+- name: add label to enable sidecar injection in openfaas function namespace
   kubernetes.core.k8s:
     state: patched
     kind: Namespace
