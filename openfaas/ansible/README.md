@@ -52,7 +52,7 @@ Modify the following variables according to the infile comments:
 - openfaas_node_port
 - openfaas_function_namespace
 - pod_status_monitor_namespace
-- openfaas_first_instance
+- first_openfaas_instance_on_this_cluster
 
 ### Modifying ansible inventory file `hosts`
 Modify the provider IP address in the `oneprovider` group.

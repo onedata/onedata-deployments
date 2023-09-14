@@ -16,7 +16,7 @@ kind_cluster_name: kind
 
 # IMPORTANT: when deploying the second or further instance of OpenFaaS on the same host, MUST be set to false.
 # Impacts some of the machinery (e.g sidecar injector) that can only be deployed once on the same k8s cluster.
-openfaas_first_instance: true
+first_openfaas_instance_on_this_cluster: true
 
 # pod-status-monitor will use this secret to gain access to oneprovider.
 openfaas_activity_feed_secret: your-secret
