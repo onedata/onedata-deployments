@@ -10,7 +10,7 @@ the necessary companions, and configures the Oneprovider.
 > of the OpenFaaS service and do not cover the continuous maintenance
 > of the services.
 
-It is assumed that OpenFaaS is installed on a dedicated VM (openfaas-vm). 
+OpenFaaS will be installed on a dedicated VM (openfaas-vm). 
 The scripts can be started on the same or different VM (ansible-vm). 
 
 ## Prerequisites

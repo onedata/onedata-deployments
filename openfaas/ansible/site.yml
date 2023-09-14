@@ -7,7 +7,7 @@
   - include_role:
       name: openfaas
   - include_role:
-      name: openfaas-pod-monitor
+      name: openfaas-pod-status-monitor
   - include_role:
       name: openfaas-sidecars
 - hosts:
