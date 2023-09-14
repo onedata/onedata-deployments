@@ -63,9 +63,9 @@
     src: kind-config.j2
     dest: kind-config.yaml
 
-- name: Create kind cluster
+- name: Create kind cluster if not already existent
   shell: "kind create cluster --config=kind-config.yaml"
-  when: not kind_output.stdout
+  when: not kind_output.stdout | regex_search(kind_cluster_name)
 
 - name: Check ClusterRoleBinding existence
   shell: kubectl get clusterrolebinding serviceaccounts-cluster-admin -o json

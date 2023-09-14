@@ -1,28 +1,53 @@
-# pod-status-monitor will use this secret to gain access to oneprovider
+# The following "kind"-prefixed variables configure kind cluster and its port mapping.
+# It necessary to have openfaas ports accesible from outside.
+
+# This is the first k8s nodePort number to be used. It concerns the container as kind runs the cluster in a docker container.   
+kind_first_node_port: 31112
+
+# This is the first port used for accessing openfass instances from outside. It concerns the VM itself.
+kind_first_port: 8080
+
+# If you plan to add few openfaas instances set the value to the number of planned openfaas instances. 
+kind_number_of_ports: 1
+
+# Name of the kind cluster.
+kind_cluster_name: kind
+
+
+# IMPORTANT: when deploying the second or further instance of OpenFaaS on the same host, MUST be set to false.
+# Impacts some of the machinery (e.g sidecar injector) that can only be deployed once on the same k8s cluster.
+first_openfaas_instance_on_this_cluster: true
+
+# pod-status-monitor will use this secret to gain access to oneprovider.
 openfaas_activity_feed_secret: your-secret
 
-# oneprovider hostname - should be accessible by openfaas
-oneprovider_hostname: poznan-ec23.datahub.egi.eu
+# Oneprovider hostname - should be accessible by openfaas.
+oneprovider_hostname: myprovider.demo.onedata.org
 
-# IP address of openfaas - should be accessible by oneprovider
+# IP address of openfaas - should be accessible by oneprovider.
 openfaas_host: 10.87.23.117
 
-# The port to access openfaas service - should be accessible by oneprovider
+# The port to access openfaas service - should be accessible by oneprovider.
+# It should be in the range:
+# {{kind_first_port}}...{{kind_first_port}}+{{kind_number_of_ports}}-1
 openfaas_port: 8080
 
-# pods running functions will be started in this namespace
+# The nodePort to be used by openfaas service. It should be in the range
+# 30000-32767. Select different ports for different instances of openfaas
+# when installing multiple openfaas instances on the same k8s cluster.
+# It should be in the range:
+# {{kind_first_node_port}}...{{kind_first_node_port}}+{{kind_number_of_ports}}-1
+openfaas_node_port: 31112
+
+# Pods running functions will be started in this namespace.
 openfaas_function_namespace: openfaas-fn
 
-# the namespace for openfaas system pods 
+# The namespace for openfaas system pods. 
 openfaas_namespace: openfaas
 
-# the namespace where the sidecar injector will be run, can be arbitrary
-sidecar_injector_namespace: onedata
+# The namespace where the sidecar injector will be run, can be arbitrary.
+sidecar_injector_namespace: openfaas-sidecar-injector
 
-# the namespace where the pod status monitor will be run, can be arbitrary
-pod_status_monitor_namespace: onedata
+# The namespace where the pod status monitor will be run, can be arbitrary.
+pod_status_monitor_namespace: openfaas-status-monitor
 
-# there may be only one sidecar injector service on a k8s cluster, if you are deploying
-# the second or next OpenFaaS machinery on the same cluster, set this option to true
-# so that another injector is not deployed
-sidecar_injector_already_deployed: false
