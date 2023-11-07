@@ -1,7 +1,7 @@
     - name: Add openfaas chart repo
       kubernetes.core.helm_repository:
         name: openfaas
-        repo_url: " https://openfaas.github.io/faas-netes/"
+        repo_url: " https://github.com/groundnuty/faas-netes/"
         force_update: true
 
     - name: Generate namespaces.yml from template
