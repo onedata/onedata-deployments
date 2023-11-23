@@ -1,7 +1,7 @@
     - name: Add openfaas chart repo
       kubernetes.core.helm_repository:
         name: openfaas
-        repo_url: " https://github.com/groundnuty/faas-netes/"
+        repo_url: "https://onedata.github.io/charts/"
         force_update: true
 
     - name: Generate namespaces.yml from template
@@ -30,7 +30,7 @@
     - name: Deploy latest version of OpenFaaS
       kubernetes.core.helm:
         name: openfaas
-        chart_ref: openfaas/openfaas
+        chart_ref: onedata/openfaas
         release_namespace: "{{openfaas_namespace}}"
         values_files:
           - openfaas-values.yaml

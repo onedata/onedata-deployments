@@ -32,7 +32,8 @@
 
 - name: Confirm the restart of oneprovider
   pause:
-    prompt: "The oneprovider will be restarted. Should we proceed? (yes/no)"
+    prompt: "This script will now restart the Oneprovider service at {{ansible_facts['nodename']}} for the changes in config to take effect.
+A short service downtime will ensue. Do you wish to continue? (yes/no)"
   register: confirm_restart
   when: not out.found
 

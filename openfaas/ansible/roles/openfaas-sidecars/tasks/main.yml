@@ -26,7 +26,7 @@
     #     privatekey_path: ./ansible.com.pem
     #     csr_path: ./ansible.com.csr
     #     provider: selfsigned
-    - name: Generate a Self Signed OpenSSL cebrtificate
+    - name: Generate a Self Signed OpenSSL certificate
       vars:
         cn: sidecarinjector.{{sidecar_injector_namespace}}.svc
       shell: |
@@ -35,6 +35,7 @@
         -addext "subjectAltName = DNS:{{cn}}" -days 3650 -reqexts v3_req \
         -extensions v3_ca -out /tmp/sidecar-injector.crt
         cat /tmp/sidecar-injector.crt | base64 -w 0 > /tmp/sidecar-injector.bundle
+      delegate_to: localhost
 
     - name: Read cert files content
       set_fact:
