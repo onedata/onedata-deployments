@@ -23,6 +23,7 @@ services:
       - "80:80"
       - "443:443"
       - "9443:9443"
+    stop_grace_period: 60m
     environment:
       #ONEPANEL_DEBUG_MODE: "true" # prevents container exit on configuration error
       ONEPANEL_BATCH_MODE: "true"

@@ -111,14 +111,6 @@
         curl --tlsv1 -sSL -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose
         chmod +x /usr/bin/docker-compose
       when: cs.stat.exists == False
-    - name: Comment otc dns
-      become: yes
-      become_user: root
-      replace:
-        path: /etc/resolv.conf
-        regexp: '^(nameserver 100)'
-        replace: '#\1'
-        backup: yes
     - name: Create /opt/onedata
       file:
         path: /opt/onedata

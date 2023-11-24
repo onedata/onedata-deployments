@@ -9,6 +9,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./config/nginx.conf:/etc/nginx/conf.d/app.conf:ro
+      - ./secret/training.htpasswd:/etc/nginx/training.htpasswd:ro
       - ./persistence/certbot/conf:/etc/letsencrypt
       - ./persistence/certbot/www:/var/www/certbot
       - ./persistence/html:/var/www/html
