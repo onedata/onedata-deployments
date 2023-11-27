@@ -9,6 +9,7 @@
     openfaas_admin_password: "{{kube_output.stdout}}"
 
 - name: Enable the maybe_expr feature in vm.args
+  become: yes
   lineinfile:
     path: "{{ item }}"
     line: -enable-feature maybe_expr
