@@ -1,6 +1,6 @@
     - name: Add openfaas chart repo
       kubernetes.core.helm_repository:
-        name: openfaas
+        name: onedata
         repo_url: "https://onedata.github.io/charts/"
         force_update: true
 
