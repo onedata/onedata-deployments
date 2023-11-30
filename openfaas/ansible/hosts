@@ -10,8 +10,8 @@
 [openfaas]
   # By default the ansible script is run on the openfaas VM.
   # If this is not the case place the correct value for ansible_host.
-  openfaas ansible_host=127.0.0.1
+  openfaas-vm ansible_host=assign_me   # e.g. localhost, 10.42.15.80
 [oneprovider]
   # The host where the Oneprovider service is already running
   # (ansible will adjust its configuration and restart it).
-  10.87.23.111 ansible_python_interpreter=/usr/bin/python3
+  oneprovider-vm ansible_host=assign_me   # e.g. localhost, 10.42.15.81

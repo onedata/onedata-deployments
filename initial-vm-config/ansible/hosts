@@ -1,13 +1,11 @@
 [myhosts]
+# node names (node, node1 ...) will be used as the first element of the node's FQDN - see group_vars/all.yaml.
+
+# run for a single node
+node ansible_host=assign_me  # e.g. localhost, 10.42.15.80
+
+# run for multiple nodes
 # node1 ansible_host=10.0.0.1
 # node2 ansible_host=10.0.0.2
 # node3 ansible_host=10.0.0.3
 # node4 ansible_host=10.0.0.4
-
-
-
-
-
-
-
-

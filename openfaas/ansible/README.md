@@ -1,7 +1,7 @@
 # Openfaas automation for Oneprovider
 
 The ansible scripts in this directory set up the OpenFaaS automation
-engine for Oneprovider.  They deploy a one-node k8s cluster, OpenFaaS,
+engine for Oneprovider. They deploy a one-node k8s cluster, OpenFaaS,
 the necessary companions, and configures the Oneprovider.
 
 > NOTE: During the process, the Oneprovider will be restarted by the scripts.
@@ -11,26 +11,60 @@ the necessary companions, and configures the Oneprovider.
 > of the services.
 
 OpenFaaS will be installed on a dedicated VM (openfaas-vm). 
-The scripts can be started on the same or different VM (ansible-vm). 
+The scripts can be started on the same or different VM (ansible-vm).
+The Oneprovider service is expected to be running on the same or different VM (oneprovider-vm).
+
+In a specific case, all the three vms can be 'localhost'.
+
 
 ## Prerequisites
-- ssh access from ansible-vm to openfaas-vm and Oneprovider
+- ssh access from ansible-vm to openfaas-vm and oneprovider-vm
 - python3 on all nodes
 
 ### ansible-vm
-- ansible 2.15
-- python3.9
+- python3
+- ansible >=2.8.4
+- jinja2 <3.10
+- jmespath
 
-## Configuring variables
-Edit `group_vars/all.yml`.
+The requirements can be installed like the following:
+```
+sudo apt install -y python3 python3-pip
+sudo python3 -m pip install ansible "Jinja2>=2.10,<3.1" jmespath kubernetes
+```
 
-## Preparing hosts
-Edit `hosts` and place the appropriate IP addresses.
+## Configuring
+
+### Preparing hosts (Ansible inventory file)
+Edit `hosts` and place the appropriate IP addresses. See the comments for explanation.
+
+### Configuring variables
+Edit `group_vars/all.yml`. At least following variables must be overwritten:
+- `oneprovider_hostname`
+- `openfaas_host`
+- `openfaas_admin_password`
+- `openfaas_activity_feed_secret`
+
+The rest can be left as defaults.
+
+### Configuring SSH connections
+Make sure all nodes are reachable with SSH from the ansible host and
+the public key (of the user running the ansible) is added.
+
+When running for a `localhost` node, one of the ways is to do this:
+```console
+ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ""  # if not generated yet
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+```
+
+or to use `ssh-agent`.
+
 
 ## Running ansible
 ```
 ansible-playbook -i hosts site.yml
 ```
+
 
 ## Installing another instance of openfaas in the same kind cluster
 

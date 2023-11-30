@@ -1,28 +1,45 @@
-# Ansible playbook for seting up VM before deploying Onedata services
+# Ansible playbook for setting up VM before deploying Onedata services
 
-## Requirements
-ansible >=2.8.4  
-jinja2 >=2.10  
-jmespath  
+## Prerequisites
+- ssh access from the VM where ansible playbook is run to other nodes
+- python3 on all nodes
 
-The requirements can be installed with pip:
+### ansible-vm
+- python3
+- ansible >=2.8.4  
+- jinja2 <3.10
+- jmespath  
+
+The requirements can be installed like the following:
 ```
-sudo pip install -U Jinja2
-sudo pip install jmespath
+sudo apt install -y python3 python3-pip
+sudo python3 -m pip install ansible "Jinja2>=2.10,<3.1" jmespath
 ```
 
 ## Configuring
-### Ansible invetory file
+
+### Preparing hosts (Ansible inventory file)
 Place your node names and IP addresses into `hosts`. See the comments for example lines. 
 
-### Ansible variables
+### Configuring variables
 Edit `group_vars/all.yml`. 
-The variables semantic is explained in the comments.
+The semantics of variables is explained in the comments.
+
+### Configuring SSH connections
+Make sure all nodes are reachable with SSH from the ansible host and
+the public key (of the user running the ansible) is added.
+
+When running for a `localhost` node, one of the ways is to do this:
+```console
+ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ""  # if not generated yet
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+```
+
+or to use `ssh-agent`.
  
+
 ## Running the playbook
 
-Run:
 ```
 ansible-playbook -i hosts site.yml
 ```
-

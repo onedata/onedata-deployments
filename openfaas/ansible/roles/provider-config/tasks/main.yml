@@ -2,7 +2,7 @@
   shell: |
     kubectl -n "{{openfaas_namespace}}" get secret openfaas-basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode
   register: kube_output
-  delegate_to: openfaas
+  delegate_to: openfaas-vm
 
 - name: Place password in var
   set_fact:

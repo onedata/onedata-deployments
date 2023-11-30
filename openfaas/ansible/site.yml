@@ -1,5 +1,5 @@
 - hosts:
-  - openfaas
+  - openfaas-vm
   any_errors_fatal: true
   tasks:
   - include_role:

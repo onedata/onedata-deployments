@@ -102,6 +102,14 @@
       systemd:
         name: docker
         state: started
+    - name: Add ubuntu user to the docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+    - name: Reset ssh connection to allow using of docker
+      ansible.builtin.meta:
+        reset_connection
     - name: Check for docker-compose
       stat:
         path: /usr/bin/docker-compose
