@@ -1,0 +1,6 @@
+dependencies:
+- name: onedata-chart-utils
+  repository: file://../onedata-chart-utils
+  version: 0.2.14
+digest: sha256:f6a9c1c260222d9ca17f7f286734c487dbdbb88c2dfc9a3acf8a1010a84cce68
+generated: "2020-11-04T16:53:33.591191+01:00"

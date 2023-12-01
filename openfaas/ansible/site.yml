@@ -1,0 +1,18 @@
+- hosts:
+  - openfaas-vm
+  any_errors_fatal: true
+  tasks:
+  - include_role:
+      name: common
+  - include_role:
+      name: openfaas
+  - include_role:
+      name: openfaas-pod-status-monitor
+  - include_role:
+      name: openfaas-sidecars
+- hosts:
+  - oneprovider
+  any_errors_fatal: true
+  tasks:
+  - include_role:
+      name: provider-config

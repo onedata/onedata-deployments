@@ -1,0 +1,17 @@
+# This is the ansible inventory host file. Replace the IP
+# addresses accordingly.
+#
+# Both hosts specified here must have connectivity to each other:
+#  * Oneprovider contacts OpenFaaS to schedule jobs.
+#  * OpenFaaS contacts the Oneprovider to return job results.
+#  * Auxiliary machinery running on the OpenFaaS host report the activity and status
+#    of the cluster to the Oneprovider.
+
+[openfaas]
+  # By default the ansible script is run on the openfaas VM.
+  # If this is not the case place the correct value for ansible_host.
+  openfaas-vm ansible_host=assign_me   # e.g. localhost, 10.42.15.80
+[oneprovider]
+  # The host where the Oneprovider service is already running
+  # (ansible will adjust its configuration and restart it).
+  oneprovider-vm ansible_host=assign_me   # e.g. localhost, 10.42.15.81

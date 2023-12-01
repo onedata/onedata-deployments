@@ -50,7 +50,9 @@ maintaining production Onedata deployments. You can also find some examples
                     
 * **bin** - useful scripts (see below)
                     
-* **ansible** - ansible scripts for vm setup. See ansible/README.md.                   
+* **initial-vm-config** - ansible scripts for vm setup - see [the README](initial-vm-config/ansible/README.md).                   
+                    
+* **openfaas** - ansible scripts and manual instructions for deploying OpenFaaS - see [the README](openfaas/README.md).
                     
 ## Useful scripts
 

@@ -1,0 +1,61 @@
+# The following "kind"-prefixed variables configure kind cluster and its port mapping.
+# It necessary to have OpenFaaS ports accessible from outside.
+
+# Name of the kind cluster.
+kind_cluster_name: kind
+
+# This is the first k8s nodePort number to be used.
+# It concerns the container as kind runs the cluster in a docker container.
+kind_first_node_port: 31112
+
+# This is the first port used for accessing OpenFaaS instances from outside.
+# It concerns the VM itself.
+kind_first_port: 8080
+
+# If you plan to add more than one OpenFaaS instance, set the value to the
+# number of planned OpenFaaS instances.
+kind_number_of_ports: 1
+
+# IMPORTANT: when deploying the second or further instance of OpenFaaS
+# on the same host, MUST be set to false. Impacts some of the machinery
+# (e.g sidecar injector) that can only be deployed once on the same k8s cluster.
+first_openfaas_instance_on_this_cluster: true
+
+# Oneprovider hostname - should be accessible from the OpenFaaS host.
+oneprovider_hostname: myprovider.demo.onedata.org
+
+# IP address of the VM where OpenFaaS will be deployed.
+# Should be accessible from the Oneprovider host.
+openfaas_host: 10.87.23.117
+
+# The port to access OpenFaaS service - should be accessible by Oneprovider.
+# It should be in the range:
+# {{kind_first_port}}...{{kind_first_port}}+{{kind_number_of_ports}}-1
+openfaas_port: 8080
+
+# The nodePort to be used by OpenFaaS service. It should be in the range
+# 30000-32767. Select different ports for different instances of OpenFaaS
+# when installing multiple OpenFaaS instances on the same k8s cluster.
+# It should be in the range:
+# {{kind_first_node_port}}...{{kind_first_node_port}}+{{kind_number_of_ports}}-1
+openfaas_node_port: 31112
+
+# The namespace for OpenFaaS system pods.
+openfaas_namespace: openfaas
+
+# Pods running functions will be started in this namespace.
+openfaas_function_namespace: openfaas-fn
+
+# Openfaas admin password
+openfaas_admin_password: your-password
+
+# The namespace where the sidecar injector will be run, can be arbitrary.
+sidecar_injector_namespace: openfaas-sidecar-injector
+
+# The namespace where the pod status monitor will be run, can be arbitrary.
+pod_status_monitor_namespace: openfaas-pod-status-monitor
+
+# pod-status-monitor will use this secret to authorize status reports sent to
+# Oneprovider, can be arbitrary.
+openfaas_activity_feed_secret: your-secret
+

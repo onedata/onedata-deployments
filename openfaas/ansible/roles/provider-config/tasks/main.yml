@@ -1,0 +1,54 @@
+- name: Obtain openfaas password
+  shell: |
+    kubectl -n "{{openfaas_namespace}}" get secret openfaas-basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode
+  register: kube_output
+  delegate_to: openfaas-vm
+
+- name: Place password in var
+  set_fact:
+    openfaas_admin_password: "{{kube_output.stdout}}"
+
+- name: Enable the maybe_expr feature in vm.args
+  become: yes
+  lineinfile:
+    path: "{{ item }}"
+    line: -enable-feature maybe_expr
+  loop:
+    - /opt/onedata/onedatify/oneprovider_conf/etc/op_panel/vm.args
+    - /opt/onedata/onedatify/oneprovider_conf/etc/cluster_manager/vm.args
+    - /opt/onedata/onedatify/oneprovider_conf/etc/op_worker/vm.args
+
+- name: Generate op-openfaas.config
+  become: yes
+  template:
+    src: openfaas-config.j2
+    dest: /opt/onedata/onedatify/oneprovider_conf/etc/op_worker/config.d/99-openfaas.config
+    mode: 0640
+    owner: 153
+    group: 150
+
+- name: Check for openfaas in layout.config
+  lineinfile:
+    name: /opt/onedata/onedatify/op-worker-overlay.config
+    search_string: "openfaas"
+    state: absent
+  check_mode: yes
+  register: out
+  failed_when: false
+
+- debug:
+    msg: "Openfaas configuration was found in /opt/onedata/onedatify/op-worker-overlay.config. It may override the ansible-generated config value. Please check it and restart oneprovider manually."
+  when: out.found
+
+- name: Confirm the restart of oneprovider
+  pause:
+    prompt: "This script will now restart the Oneprovider service at {{ansible_facts['nodename']}} for the changes in config to take effect.
+A short service downtime will ensue. Do you wish to continue? (yes/no)"
+  register: confirm_restart
+  when: not out.found
+
+- name: Restart oneprovider
+  become: yes 
+  shell: onedatify restart
+  when: not out.found and confirm_restart.user_input | bool
+

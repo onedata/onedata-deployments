@@ -1,0 +1,8 @@
+domain: onezone.onedata.org  # domain name
+subdomain: my-provider       # subdomain name
+                             # The FQDN of the node will be:
+                             #   {{inventory_hostname}}.{{subdomain}}.{{domain}}
+                             # inventory_hostname is the node name from the hosts file
+
+disk_dev: /dev/sdd   # path to the disk dev for an LVM volume. The existing data will be lost!
+vg_name: onedata-vg  # LVM volume group name

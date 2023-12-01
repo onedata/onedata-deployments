@@ -1,0 +1,19 @@
+# Default values for sidecarinjector.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+appname: sidecarinjector
+namespace: openfaas-fn
+
+caBundle:
+  crt: |-
+    -----BEGIN CERTIFICATE-----
+    REPLACE ME: SEE README.md for info about key/certificate creation
+    -----END CERTIFICATE-----
+  key: |-
+    -----BEGIN RSA PRIVATE KEY-----
+    REPLACE ME: SEE README.md for info about key/certificate creation    
+    -----END RSA PRIVATE KEY-----
+
+  caBundle:     REPLACE ME: SEE README.md for info about key/certificate creation
+

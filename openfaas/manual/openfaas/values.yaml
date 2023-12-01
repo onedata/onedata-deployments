@@ -1,0 +1,5 @@
+# template for OpenFaaS configuration, using values from group_vars/all.yml
+
+kubernetesDNSDomain: cluster.local
+functionNamespace: openfaas-fn  # Default namespace for functions
+

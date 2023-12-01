@@ -1,0 +1,27 @@
+    - name: Create namespace
+      kubernetes.core.k8s:
+        name: "{{pod_status_monitor_namespace}}"
+        api_version: v1
+        kind: Namespace
+        state: present
+
+    - name: Copy openfaas-pod-status-monitor charts
+      copy:
+        src: openfaas-pod-status-monitor.tgz
+        dest: openfaas-pod-status-monitor.tgz
+
+    - name: Unpack openfaas-pod-status-monitor.tgz
+      shell: tar zxf openfaas-pod-status-monitor.tgz
+
+    - name: Generate values.yaml
+      template:
+        src: values.j2
+        dest: openfaas-pod-status-monitor-values.yaml
+
+    - name: Deploy openfaas-pod-status-monitor
+      kubernetes.core.helm:
+        name: openfaas-pod-status-monitor
+        chart_ref: ./openfaas-pod-status-monitor
+        release_namespace: "{{pod_status_monitor_namespace}}"
+        values_files:
+          - openfaas-pod-status-monitor-values.yaml

@@ -1,0 +1,20 @@
+[
+    {op_worker, [
+        {openfaas_host, "{{openfaas_host}}"},
+        {openfaas_port, {{openfaas_port}}},
+        {openfaas_function_namespace, "{{openfaas_function_namespace}}"},
+        {openfaas_admin_username, "admin"},
+        {openfaas_admin_password, "{{openfaas_admin_password}}"},
+        {openfaas_function_constraints, []},
+        {openfaas_function_labels, #{}},
+        {openfaas_function_limits, #{}},
+        {openfaas_function_annotations, #{}},
+        {openfaas_function_requests, #{}},
+        {openfaas_function_env, #{
+            "read_timeout" => "604800s",
+            "write_timeout" => "604800s",
+            "exec_timeout" => "604800s"}
+        },
+        {openfaas_activity_feed_secret, "{{openfaas_activity_feed_secret}}"}
+    ]}
+].

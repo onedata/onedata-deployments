@@ -1,0 +1,100 @@
+- name: A become=yes block
+  become: yes
+  block:
+    - name: Check for docker
+      stat:
+        path: /usr/bin/docker
+      register: ds
+    - name: Install docker
+      shell: curl --tlsv1 -sSL https://get.docker.com/ | sh
+      when: ds.stat.exists == False
+    - name: Start docker
+      systemd:
+        name: docker
+        state: started
+    - name: Ensure group "docker" exists 
+      ansible.builtin.group:
+        name: docker
+        state: present
+    - name: Add the current user to group docker
+      user:
+        name: '{{ ansible_user_id }}'
+        groups: docker
+        append: yes
+    - name: Reset ssh connection to allow using of docker
+      ansible.builtin.meta:
+        reset_connection
+    - name: Download kind
+      get_url:
+        url: "https://kind.sigs.k8s.io/dl/v0.19.0/kind-linux-amd64"
+        dest: "/usr/local/bin/kind"
+        mode: 0755
+        force: true
+    - name: Install apt-transport-https and ca-certificates
+      apt:
+        name: apt-transport-https, ca-certificates
+        state: present
+    - name: Add Kubernetes GPG key
+      apt_key:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        state: present
+    - name: Add Kubernetes repository
+      apt_repository:
+        repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+        state: present
+    - name: Install kubectl
+      apt:
+        name: kubectl
+        state: present
+        update_cache: yes
+
+- name: Check Kind cluster status
+  shell: kind get clusters
+  register: kind_output
+  changed_when: false
+  failed_when: false
+
+- name: Print Kind cluster status
+  debug:
+    msg: "Kind cluster is running: {{ 'true' if kind_output.stdout else 'false' }}"
+
+- name: Prepare kind-config.yaml
+  template:
+    src: kind-config.j2
+    dest: kind-config.yaml
+
+- name: Create kind cluster if not already existent
+  shell: "kind create cluster --config=kind-config.yaml"
+  when: not kind_output.stdout | regex_search(kind_cluster_name)
+
+- name: Check ClusterRoleBinding existence
+  shell: kubectl get clusterrolebinding serviceaccounts-cluster-admin -o json
+  register: clusterrolebinding_output
+  ignore_errors: true
+
+- name: Print ClusterRoleBinding existence
+  debug:
+    msg: "ClusterRoleBinding already exists: {{ 'true' if clusterrolebinding_output.rc == 0 else 'false' }}"
+
+- name: Configure permissions for k8s
+  shell: kubectl create clusterrolebinding serviceaccounts-cluster-admin   --clusterrole=cluster-admin   --group=system:serviceaccounts
+  when: clusterrolebinding_output.rc
+- name: Download Helm installation script
+  get_url:
+    url: https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+    dest: /tmp/get_helm.sh
+    mode: 0755
+
+- name: Run Helm installation script
+  shell: /tmp/get_helm.sh
+  become: yes
+  args:
+    creates: /usr/local/bin/helm
+
+- name: Verify Helm installation
+  shell: helm version --short
+  register: helm_output
+
+- name: Print Helm version
+  debug:
+    msg: "Helm version: {{ helm_output.stdout }}"

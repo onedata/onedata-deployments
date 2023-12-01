@@ -1,0 +1,72 @@
+- name: add label to enable sidecar injection in openfaas function namespace
+  kubernetes.core.k8s:
+    state: patched
+    kind: Namespace
+    name: "{{openfaas_function_namespace}}"
+    definition:
+      metadata:
+        labels:
+          sidecar-injection: enabled
+
+- name: Deploy sidecar injector
+  when: first_openfaas_instance_on_this_cluster
+  block:
+    - name: Create namespace
+      kubernetes.core.k8s:
+        name: "{{sidecar_injector_namespace}}"
+        api_version: v1
+        kind: Namespace
+        state: present
+
+    # Using the community.crypto.x509_certificate did not work:
+    #  it could not find cryptography library (>=1.6) despite version 2.8 is installed
+    # - name: Generate a Self Signed OpenSSL certificate
+    #   community.crypto.x509_certificate:
+    #     path: ./ansible.com.crt
+    #     privatekey_path: ./ansible.com.pem
+    #     csr_path: ./ansible.com.csr
+    #     provider: selfsigned
+    - name: Generate a Self Signed OpenSSL certificate
+      vars:
+        cn: sidecarinjector.{{sidecar_injector_namespace}}.svc
+      shell: |
+        openssl genrsa -out /tmp/sidecar-injector.key 2048
+        openssl  req -x509 -new -nodes -key /tmp/sidecar-injector.key -subj "/CN={{cn}}" \
+        -addext "subjectAltName = DNS:{{cn}}" -days 3650 -reqexts v3_req \
+        -extensions v3_ca -out /tmp/sidecar-injector.crt
+        cat /tmp/sidecar-injector.crt | base64 -w 0 > /tmp/sidecar-injector.bundle
+      delegate_to: localhost
+
+    - name: Read cert files content
+      set_fact:
+        sidecar_injector_key: "{{ lookup('file', '/tmp/sidecar-injector.key') }}"
+        sidecar_injector_cert: "{{ lookup('file', '/tmp/sidecar-injector.crt') }}"
+        sidecar_injector_bundle: "{{ lookup('file', '/tmp/sidecar-injector.bundle') }}"
+
+    - name: Generate file from template
+      template:
+        src: values.j2
+        dest: openfaas-sidecar-values.yaml
+
+    - name: Remove tmp files
+      file:
+        path: "{{item}}"
+        state: absent
+      with_items:
+        - /tmp/sidecar-injector.key
+        - /tmp/sidecar-injector.crt
+        - /tmp/sidecar-injector.bundle
+        
+    - name: Add onedata chart repo
+      kubernetes.core.helm_repository:
+        name: onedata
+        repo_url: "https://onedata.github.io/charts/"
+        force_update: true
+
+    - name: Deploy openfaas-injector
+      kubernetes.core.helm:
+        name: sidecarinjector
+        chart_ref: onedata/sidecarinjector
+        release_namespace: "{{sidecar_injector_namespace}}"
+        values_files:
+          - openfaas-sidecar-values.yaml

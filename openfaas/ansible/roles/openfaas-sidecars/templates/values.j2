@@ -1,0 +1,11 @@
+# template for OpenFaaS sidecar injector configuration, using values from group_vars/all.yml
+
+appname: sidecarinjector
+namespace: {{sidecar_injector_namespace}}
+
+caBundle:
+  crt: |-
+    {{sidecar_injector_cert|indent(4)}}
+  key: |-
+    {{sidecar_injector_key|indent(4)}}
+  caBundle: {{sidecar_injector_bundle}}
