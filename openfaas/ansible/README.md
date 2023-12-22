@@ -53,7 +53,7 @@ the public key (of the user running the ansible) is added.
 
 When running for a `localhost` node, one of the ways is to do this:
 ```console
-ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ""  # if not generated yet
+[ ! -f ~/.ssh/id_rsa ] && ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ""  # will be done if not generated yet
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 ```
 
