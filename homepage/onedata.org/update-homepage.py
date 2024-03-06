@@ -98,7 +98,7 @@ def deploy_static_files_from_docker(docker):
     cmd(['docker', 'volume', 'prune', '--force'])
 
     print('')
-    print('All done! Visit onedata.org and make sure everything is there.')
+    print('All done! Visit https://onedata.org and make sure everything is there.')
 
 
 def main():
