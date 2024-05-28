@@ -20,8 +20,10 @@ In a specific case, all the three vms can be 'localhost'.
 ## Prerequisites
 - ssh access from ansible-vm to openfaas-vm and oneprovider-vm
 - python3 on all nodes
+- oneprovider version >= 21.02.5
 
 ### ansible-vm
+- Ubuntu 20.04 or higher
 - python3
 - ansible >=2.8.4
 - jinja2 <3.10
@@ -29,9 +31,16 @@ In a specific case, all the three vms can be 'localhost'.
 
 The requirements can be installed like the following:
 ```
-sudo apt install -y python3 python3-pip
-sudo python3 -m pip install ansible "Jinja2>=2.10,<3.1" jmespath kubernetes
+sudo apt update
+sudo apt install python3 pipx python3-pip
+pipx ensurepath
+. ~/.bashrc
+pipx install --include-deps ansible
+sudo python3 -m pip install ansible jmespath kubernetes
 ```
+
+> NOTE: The scripts has been tested with ansible 6.7.0 and ansible-core 2.13.13.
+> In case of problems with future ansible versions try installing these specific versions.
 
 ## Configuring
 
