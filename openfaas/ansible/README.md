@@ -32,10 +32,11 @@ In a specific case, all the three vms can be 'localhost'.
 The requirements can be installed like the following:
 ```
 sudo apt update
-sudo apt install python3 pipx python3-pip
+sudo apt install python3 pipx python3-pip python3-venv
 pipx ensurepath
 . ~/.bashrc
 pipx install --include-deps ansible
+ansible-galaxy collection install kubernetes.core
 sudo python3 -m pip install ansible jmespath kubernetes
 ```
 

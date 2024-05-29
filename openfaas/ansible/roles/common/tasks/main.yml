@@ -30,9 +30,13 @@
         dest: "/usr/local/bin/kind"
         mode: 0755
         force: true
-    - name: Install apt-transport-https and ca-certificates
+    - name: Install apt-transport-https, ca-certificates and python3-pip
       apt:
-        name: apt-transport-https, ca-certificates
+        name: apt-transport-https, ca-certificates, python3-pip
+        state: present
+    - name: Install kubernetes python module
+      pip:
+        name: kubernetes
         state: present
     # - name: Add Kubernetes GPG key
     #   apt_key:
