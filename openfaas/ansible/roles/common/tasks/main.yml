@@ -34,28 +34,21 @@
       apt:
         name: apt-transport-https, ca-certificates, python3-pip
         state: present
+    - name: Ensure permissions for ~/.docker
+      file:
+        path: "{{ ansible_user_dir }}/.docker"
+        owner: "{{ ansible_user_id }}"
+        recurse: yes
+        mode: 0700
     - name: Install kubernetes python module
       pip:
         name: kubernetes
         state: present
-    # - name: Add Kubernetes GPG key
-    #   apt_key:
-    #     url: https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key
-    #     state: present
-    # - name: Add Kubernetes repository
-    #   apt_repository:
-    #     repo: deb https://pkgs.k8s.io/core:/stable:/v1.28/deb/ kubernetes-bionic main
-    #     state: present
     - name: Install kubectl
       get_url:
         url: https://dl.k8s.io/release/v1.30.0/bin/linux/amd64/kubectl
         dest: /usr/local/bin/kubectl
         mode: 0755
-      # apt:
-      #   name: kubectl
-      #   state: present
-      #   update_cache: yes
-
 
 - name: Check Kind cluster status
   shell: kind get clusters

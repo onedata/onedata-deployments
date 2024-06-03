@@ -37,7 +37,6 @@ pipx ensurepath
 . ~/.bashrc
 pipx install --include-deps ansible
 ansible-galaxy collection install kubernetes.core
-sudo python3 -m pip install ansible jmespath kubernetes
 ```
 
 > NOTE: The scripts has been tested with ansible 6.7.0 and ansible-core 2.13.13.
