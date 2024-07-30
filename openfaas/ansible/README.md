@@ -14,14 +14,16 @@ OpenFaaS will be installed on a dedicated VM (openfaas-vm).
 The scripts can be started on the same or different VM (ansible-vm).
 The Oneprovider service is expected to be running on the same or different VM (oneprovider-vm).
 
-In a specific case, all the three vms can be 'localhost'.
+In a specific case, all the three VMs can be the same one.
 
 
 ## Prerequisites
 - ssh access from ansible-vm to openfaas-vm and oneprovider-vm
-- python3 on all nodes
+- python3 on all VMs
+- oneprovider version >= 21.02.5
 
 ### ansible-vm
+- Ubuntu 20.04 or higher
 - python3
 - ansible >=2.8.4
 - jinja2 <3.10
@@ -29,9 +31,16 @@ In a specific case, all the three vms can be 'localhost'.
 
 The requirements can be installed like the following:
 ```
-sudo apt install -y python3 python3-pip
-sudo python3 -m pip install ansible "Jinja2>=2.10,<3.1" jmespath kubernetes
+sudo apt update
+sudo apt install python3 pipx python3-pip python3-venv
+pipx ensurepath
+. ~/.bashrc
+pipx install --include-deps ansible
+ansible-galaxy collection install kubernetes.core
 ```
+
+> NOTE: The scripts has been tested with ansible 6.7.0 and ansible-core 2.13.13.
+> In case of problems with future ansible versions try installing these specific versions.
 
 ## Configuring
 
@@ -51,7 +60,7 @@ The rest can be left as defaults.
 Make sure all nodes are reachable with SSH from the ansible host and
 the public key (of the user running the ansible) is added.
 
-When running for a `localhost` node, one of the ways is to do this:
+When running ansible task on the same host, one of the ways is to do this:
 ```console
 [ ! -f ~/.ssh/id_rsa ] && ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ""  # will be done if not generated yet
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys

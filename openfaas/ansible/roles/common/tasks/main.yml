@@ -30,23 +30,25 @@
         dest: "/usr/local/bin/kind"
         mode: 0755
         force: true
-    - name: Install apt-transport-https and ca-certificates
+    - name: Install apt-transport-https, ca-certificates and python3-pip
       apt:
-        name: apt-transport-https, ca-certificates
+        name: apt-transport-https, ca-certificates, python3-pip
         state: present
-    - name: Add Kubernetes GPG key
-      apt_key:
-        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-        state: present
-    - name: Add Kubernetes repository
-      apt_repository:
-        repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    - name: Ensure permissions for ~/.docker
+      file:
+        path: "{{ ansible_user_dir }}/.docker"
+        owner: "{{ ansible_user_id }}"
+        recurse: yes
+        mode: 0700
+    - name: Install kubernetes python module
+      pip:
+        name: kubernetes
         state: present
     - name: Install kubectl
-      apt:
-        name: kubectl
-        state: present
-        update_cache: yes
+      get_url:
+        url: https://dl.k8s.io/release/v1.30.0/bin/linux/amd64/kubectl
+        dest: /usr/local/bin/kubectl
+        mode: 0755
 
 - name: Check Kind cluster status
   shell: kind get clusters
