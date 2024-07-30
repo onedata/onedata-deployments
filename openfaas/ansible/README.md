@@ -14,12 +14,12 @@ OpenFaaS will be installed on a dedicated VM (openfaas-vm).
 The scripts can be started on the same or different VM (ansible-vm).
 The Oneprovider service is expected to be running on the same or different VM (oneprovider-vm).
 
-In a specific case, all the three vms can be 'localhost'.
+In a specific case, all the three VMs can be the same one.
 
 
 ## Prerequisites
 - ssh access from ansible-vm to openfaas-vm and oneprovider-vm
-- python3 on all nodes
+- python3 on all VMs
 - oneprovider version >= 21.02.5
 
 ### ansible-vm
@@ -60,7 +60,7 @@ The rest can be left as defaults.
 Make sure all nodes are reachable with SSH from the ansible host and
 the public key (of the user running the ansible) is added.
 
-When running for a `localhost` node, one of the ways is to do this:
+When running ansible task on the same host, one of the ways is to do this:
 ```console
 [ ! -f ~/.ssh/id_rsa ] && ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ""  # will be done if not generated yet
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
