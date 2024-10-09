@@ -25,11 +25,10 @@ this runs the homepage static docker with a web server inside.
 
 ## First deployment
 
-1. Place the basic auth credentials to Onedata training files in `secret/training.htpasswd`.
-2. Run `./update-homepage.py deploy` to deploy static homepage files according to `homepage-docker-image.cfg`
-3. Run `./init-letsencrypt.sh`, you might want to enable staging mode before (see the beginning of the script)
-4. Verify if the certificates are OK and homepage is served on onedata.org
-5. Run `docker-compose up -d`
+1. Run `./update-homepage.py deploy` to deploy static homepage files according to `homepage-docker-image.cfg`
+2. Run `./init-letsencrypt.sh`, you might want to enable staging mode before (see the beginning of the script)
+3. Verify if the certificates are OK and homepage is served on onedata.org
+4. Run `docker-compose up -d`
 
 
 ## Maintaining the deployment
