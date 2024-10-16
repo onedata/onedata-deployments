@@ -3,7 +3,7 @@ version: '2'
 services:
   node1.onezone:
     restart: always
-    image: onedata/onezone:21.02.6
+    image: onedata/onezone:21.02.7
     network_mode: host
     container_name: onezone
     volumes:
@@ -15,6 +15,8 @@ services:
       # Secret config files
       - "./data/secret/auth.config:/etc/oz_worker/auth.config" # OpenID & SAML config
       - "./data/secret/mailer.config:/etc/oz_worker/config.d/mailer.config"
+      # Custom frontpage
+      - "./data/frontpage:/var/www/html/oz_worker/custom/frontpage"
     ports:
       # dns server
       - "53:53"
