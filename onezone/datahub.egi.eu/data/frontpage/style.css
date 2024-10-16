@@ -199,6 +199,10 @@ button.loading .button-spinner {
   overflow: auto;
 }
 
+.login-message-container br {
+  margin-bottom: 0.4em;
+}
+
 .login-notification + .login-notification {
   padding-top: 0.5em;
   margin-top: 0.5em;
