@@ -201,6 +201,8 @@ button.loading .button-spinner {
 
 .login-message-container br {
   margin-bottom: 0.4em;
+  display: block;
+  content: " ";
 }
 
 .login-notification + .login-notification {
