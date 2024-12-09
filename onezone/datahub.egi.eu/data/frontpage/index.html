@@ -1,3 +1,11 @@
+<!--
+Note, that egi-datahub-v2 template is somehow hacky, because it was created to change
+standard messages, button look etc. after the main integration script has been released.
+It uses additional JavaScript code in ./assets/customize.js that changes how the standard
+frontpage works. If you want to create traditional frontpage, look at egi-datahub
+template.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,19 +14,25 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?rev=2">
+  <link rel="stylesheet" href="./style.css?rev=1733387933368">
 </head>
 <body class="egi-datahub-frontpage">
   <div class="onedata-logo"></div>
   <div class="egi-datahub-logo"></div>
 
   <!-- components that will be replaced by Onedata app -->
-  <h1 id="sign-in-header" class="sign-in-header"></h1>
-  <h2 id="sign-in-subheader" class="sign-in-subheader"></h2>
-  <div id="login-buttons-container" class="login-buttons-container"></div>
+  <h1 id="sign-in-header" class="egi-hidden"></h1>
+  <h1 class="sign-in-header">Welcome</h1>
+  <h2 id="sign-in-subheader" class="egi-hidden"></h2>
+  <div
+    id="login-buttons-container"
+    class="login-buttons-container egi-login-buttons-container egi-hidden"
+  ></div>
   <div id="login-form-container" class="login-form-container"></div>
   <div id="login-error-container" class="login-error-container"></div>
   <div id="login-message-container" class="login-message-container"></div>
   <div id="footer" class="footer"></div>
+
+  <script src="./assets/customize.js?rev=1733387933368"></script>
 </body>
 </html>
