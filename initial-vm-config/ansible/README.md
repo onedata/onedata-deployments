@@ -1,10 +1,20 @@
 # Ansible playbook for setting up VM before deploying Onedata services
 
+This playbook is used to initially prepare the the VMs (or physical
+hosts) where Onezone or Oneprovider is going to be deployed. The
+script requires that an epmty block device is avalable. A logical
+volume will be created on this block device. It is intended to store
+the persistant data of Onedata services. Using of LVM volume allows
+for better managing of the deployment especially when doing
+snapshot-based live backups.
+
 ## Prerequisites
 - ssh access from the VM where ansible playbook is run to other nodes
 - python3 on all nodes
 
 ### ansible-vm
+
+The following packages are needed:
 - python3
 - ansible >=2.8.4  
 - jinja2 <3.10
@@ -15,6 +25,8 @@ The requirements can be installed like the following:
 sudo apt install -y python3 python3-pip
 sudo python3 -m pip install ansible "Jinja2>=2.10,<3.1" jmespath
 ```
+
+Note: In case of a single node installation all steps can be done on the same VM intended for the given deployment
 
 ## Configuring
 

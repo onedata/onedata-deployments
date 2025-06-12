@@ -27,13 +27,13 @@
         state: present
       when: ansible_distribution == "CentOS"
       
-    - name: Set max number of file
+    - name: Set max number of file #y
       lineinfile:
         regexp: soft nofile
         line: "* soft nofile 63535"
         state: present
         path: /etc/security/limits.conf
-    - name: Set max number of file
+    - name: Set max number of file #y
       lineinfile:
         regexp: hard nofile
         line: "* hard nofile 63535"
@@ -41,13 +41,13 @@
         path: /etc/security/limits.conf
     - name: Touch /etc/sysctl.d/50-swappiness.conf
       shell: sudo touch /etc/sysctl.d/50-swappiness.conf
-    - name: Set swappiness
+    - name: Set swappiness #y
       lineinfile:
         regexp: vm.swappiness=
         line: vm.swappiness=0
         state: present
         path: /etc/sysctl.d/50-swappiness.conf
-    - name: copy disable-thp.service
+    - name: copy disable-thp.service #y
       copy:
         src: disable-thp.service
         dest: /etc/systemd/system/disable-thp.service
@@ -67,7 +67,7 @@
       sysctl:
         name: kernel.unprivileged_userns_clone
         value: "0"       
-    - name: Set hostname
+    - name: Set hostname #y
       hostname:
         name: "{{ inventory_hostname }}.{{subdomain}}.{{ domain }}"
     - name: Set FQDNs in /etc/hosts for all nodes
@@ -95,7 +95,7 @@
       stat:
         path: /usr/bin/docker
       register: ds
-    - name: Install docker
+    - name: Install docker #y
       shell: curl --tlsv1 -sSL https://get.docker.com/ | sh
       when: ds.stat.exists == False
     - name: Start docker
@@ -110,15 +110,15 @@
     - name: Reset ssh connection to allow using of docker
       ansible.builtin.meta:
         reset_connection
-    - name: Check for docker-compose
-      stat:
-        path: /usr/bin/docker-compose
-      register: cs      
-    - name: Install docker-compose
-      shell: |
-        curl --tlsv1 -sSL -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose
-        chmod +x /usr/bin/docker-compose
-      when: cs.stat.exists == False
+    # - name: Check for docker-compose
+    #   stat:
+    #     path: /usr/bin/docker-compose
+    #   register: cs      
+    # - name: Install docker-compose
+    #   shell: |
+    #     curl --tlsv1 -sSL -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose
+    #     chmod +x /usr/bin/docker-compose
+    #   when: cs.stat.exists == False
     - name: Create /opt/onedata
       file:
         path: /opt/onedata
