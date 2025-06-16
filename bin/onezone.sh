@@ -5,6 +5,15 @@
 
 cd "$(dirname "$0")"
 
+DOCKER_COMPOSE="docker compose"
+if ! eval "$DOCKER_COMPOSE" > /dev/null; then
+    DOCKER_COMPOSE="docker-compose"
+    if ! eval "$DOCKER_COMPOSE" > /dev/null; then
+        echo 'Cannot find the docker compose command. Tried "docker compose" and "docker-compose". Exiting.'
+        exit 1
+    fi
+fi
+
 # exit on errors
 set -e
 
@@ -27,15 +36,15 @@ fi
 
 case ${1} in
     start)
-        EMERGENCY_PASSPHRASE=${EMERGENCY_PASSPHRASE} docker-compose up -d
+        EMERGENCY_PASSPHRASE=${EMERGENCY_PASSPHRASE} eval "$DOCKER_COMPOSE up -d"
         ;;
     stop)
         docker exec -it onezone /root/onezone-stop-graceful.sh
-        EMERGENCY_PASSPHRASE=${EMERGENCY_PASSPHRASE} docker-compose down
+        EMERGENCY_PASSPHRASE=${EMERGENCY_PASSPHRASE} eval "$DOCKER_COMPOSE down"
         ;;
     restart)
-        EMERGENCY_PASSPHRASE=${EMERGENCY_PASSPHRASE} docker-compose down
-        EMERGENCY_PASSPHRASE=${EMERGENCY_PASSPHRASE} docker-compose up -d
+        EMERGENCY_PASSPHRASE=${EMERGENCY_PASSPHRASE} eval "$DOCKER_COMPOSE down"
+        EMERGENCY_PASSPHRASE=${EMERGENCY_PASSPHRASE} eval "$DOCKER_COMPOSE up -d"
         ;;
     logs)
         # Displays container logs

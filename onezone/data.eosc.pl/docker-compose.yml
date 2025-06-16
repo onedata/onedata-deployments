@@ -4,7 +4,7 @@ services:
   node1.onezone:
     restart: always
     image: onedata/onezone:21.02.8
-    hostname: node1.onezone.local
+    hostname: node1.onezone.internal
     # dns: 8.8.8.8 # uncomment if container can't ping any domain
     container_name: onezone
     volumes:
