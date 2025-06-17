@@ -55,7 +55,7 @@ kubectl create secret generic regcred --from-file=.dockerconfigjson=/home/ubuntu
 Then use the secret in `values.yaml` files:
 ```
 imagePullSecrets:
-name: regcred
+- name: regcred
 ```
 Note that secrets are bound to namespaces. In order to copy the secret to another namespace use:
 ```
