@@ -15,6 +15,7 @@ services:
       - "./data/configs/overlay.config:/etc/oz_worker/overlay.config"
       # OpenID & SAML config
       - "./data/secret/auth.config:/etc/oz_worker/auth.config"
+      - "./data/images/eoscpl.svg:/var/www/html/oz_worker/custom/eoscpl.svg"
 
     ports:
       - "53:53"
