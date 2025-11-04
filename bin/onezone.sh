@@ -6,9 +6,9 @@
 cd "$(dirname "$0")"
 
 DOCKER_COMPOSE="docker compose"
-if ! eval "$DOCKER_COMPOSE" > /dev/null; then
+if ! eval "$DOCKER_COMPOSE version" > /dev/null; then
     DOCKER_COMPOSE="docker-compose"
-    if ! eval "$DOCKER_COMPOSE" > /dev/null; then
+    if ! eval "$DOCKER_COMPOSE version" > /dev/null; then
         echo 'Cannot find the docker compose command. Tried "docker compose" and "docker-compose". Exiting.'
         exit 1
     fi
