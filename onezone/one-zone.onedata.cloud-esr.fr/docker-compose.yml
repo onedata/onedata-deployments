@@ -63,6 +63,6 @@ services:
             nodes:
               - "n1"
         onezone:
-          name: "eosc pl"
-          domainName: "data.eosc.pl"
-          letsEncryptEnabled: false
+          name: "Onedata @ cloud-esr.fr"
+          domainName: "one-zone.onedata.cloud-esr.fr"
+          letsEncryptEnabled: true
