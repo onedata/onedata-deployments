@@ -64,5 +64,5 @@ services:
               - "n1"
         onezone:
           name: "Onedata @ cloud-esr.fr"
-          domainName: "one-zone.onedata.cloud-esr.fr"
+          domainName: "onedata.cloud-esr.fr"
           letsEncryptEnabled: true
