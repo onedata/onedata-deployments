@@ -1,4 +1,4 @@
-# Scripts for deploying Onezone @ one-zone.onedata.cloud-esr.fr
+# Scripts for deploying Onezone @ onedata.cloud-esr.fr
 
 ## Prerequisites
 
@@ -7,13 +7,13 @@ Prepare a host with the following:
 * docker
 * docker-compose
 * python + pyyaml
-* hostname set to one-zone.onedata.cloud-esr.fr
-* static DNS NS records pointing at the host IP for subdomain one-zone.onedata.cloud-esr.fr, e.g.:
+* hostname set to onedata.cloud-esr.fr
+* static DNS NS records pointing at the host IP for subdomain onedata.cloud-esr.fr, e.g.:
   ```
-  one-zone.onedata.cloud-esr.fr. IN NS ns1.one-zone.onedata.cloud-esr.fr
-  one-zone.onedata.cloud-esr.fr. IN NS ns2.one-zone.onedata.cloud-esr.fr
-  ns1.one-zone.onedata.cloud-esr.fr. IN A 195.220.237.111
-  ns2.one-zone.onedata.cloud-esr.fr. IN A 195.220.237.111
+  onedata.cloud-esr.fr. IN NS ns1.onedata.cloud-esr.fr
+  onedata.cloud-esr.fr. IN NS ns2.onedata.cloud-esr.fr
+  ns1.onedata.cloud-esr.fr. IN A 195.220.237.111
+  ns2.onedata.cloud-esr.fr. IN A 195.220.237.111
   ```
   Onezone will handle the requests for the domain using the build-in DNS server,
   which enables subdomain delegation for subject Oneproviders (you can find out
@@ -26,7 +26,7 @@ Prepare a host with the following:
 2. Run `./onezone.sh start` (see [onezone.sh]) 
 3. The installation should happen automatically (batch mode) and might take a while 
    (consult container logs for indication whether the installation was finished)
-4. Visit https://one-zone.onedata.cloud-esr.fr and log in using the credentials 
+4. Visit https://onedata.cloud-esr.fr and log in using the credentials 
 `admin:EMERGENCY_PASSPHRASE` (can be found in `data/secret/emergency-passphrase.txt`)
 
 
