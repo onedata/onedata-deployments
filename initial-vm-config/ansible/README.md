@@ -10,10 +10,16 @@
 - jinja2 <3.10
 - jmespath  
 
-The requirements can be installed like the following:
+The recomended way to install the requirements is to do it in a dedicated Python virtual environment 
+using the following commands:
 ```
+sudo apt update
 sudo apt install -y python3 python3-pip
 sudo python3 -m pip install ansible "Jinja2>=2.10,<3.1" jmespath
+sudo apt install python3 python3-venv
+python3 -m venv ~/.vm-prep
+source ~/.vm-prep/bin/activate
+python3 -m pip install ansible "Jinja2>=2.10,<3.1" jmespath
 ```
 
 ## Configuring
