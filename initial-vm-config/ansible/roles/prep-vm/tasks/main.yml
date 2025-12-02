@@ -47,14 +47,20 @@
         line: vm.swappiness=0
         state: present
         path: /etc/sysctl.d/50-swappiness.conf
+    - name: Check for THP
+      stat:
+        path: /sys/kernel/mm/transparent_hugepage/enabled
+      register: thp
     - name: copy disable-thp.service
       copy:
         src: disable-thp.service
         dest: /etc/systemd/system/disable-thp.service
+      when: thp.stat.exists == True
     - name: Enable disable-thp.service
       systemd:
         name: disable-thp
         state: started
+      when: thp.stat.exists == True
     - name: Set net.core.wmem_max
       sysctl:
         name: net.core.wmem_max
