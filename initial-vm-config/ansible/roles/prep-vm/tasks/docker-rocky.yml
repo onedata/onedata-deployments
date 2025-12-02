@@ -1,0 +1,40 @@
+    - name: Remove conflicting packages (old Docker / Podman / runc)
+      yum:
+        name:
+          - docker
+          - docker-client
+          - docker-client-latest
+          - docker-common
+          - docker-latest
+          - docker-latest-logrotate
+          - docker-logrotate
+          - docker-engine
+          - podman
+          - runc
+        state: absent
+      ignore_errors: yes
+
+    - name: Install prerequisites for Docker repo
+      yum:
+        name: dnf-plugins-core
+        state: present
+
+    - name: Add official Docker repository
+      ansible.builtin.yum_repository:
+        name: docker-ce
+        description: Docker CE Stable - x86_64
+        baseurl: https://download.docker.com/linux/rhel/$releasever/$basearch/stable
+        enabled: yes
+        gpgcheck: yes
+        gpgkey: https://download.docker.com/linux/rhel/gpg
+
+    - name: Install Docker Engine packages
+      yum:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: latest
+

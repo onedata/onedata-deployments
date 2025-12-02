@@ -24,9 +24,9 @@
           - bind-utils
           - jq
           - curl
+          - lvm2
         state: present
-      when: ansible_distribution == "CentOS"
-      
+      when: ansible_distribution in ["CentOS", "Rocky"]      
     - name: Set max number of file
       lineinfile:
         regexp: soft nofile
@@ -67,6 +67,7 @@
       sysctl:
         name: kernel.unprivileged_userns_clone
         value: "0"       
+      when: ansible_distribution == "Ubuntu"
     - name: Set hostname
       hostname:
         name: "{{ inventory_hostname }}.{{subdomain}}.{{ domain }}"
@@ -97,28 +98,39 @@
       register: ds
     - name: Install docker
       shell: curl --tlsv1 -sSL https://get.docker.com/ | sh
-      when: ds.stat.exists == False
+      when: ds.stat.exists == False and ansible_distribution == "Ubuntu"
+    - name: Include rocky-specific Docker installation
+      include_tasks: docker-rocky.yml
+      when: ansible_distribution == "Rocky"  
     - name: Start docker
       systemd:
         name: docker
+        enabled: yes
         state: started
-    - name: Add ubuntu user to the docker group
+    # - name: Add ubuntu user to the docker group
+    #   user:
+    #     name: ubuntu
+    #     groups: docker
+    #     append: yes
+    #   when: ansible_distribution == "Ubuntu"
+    - name: Add current user to docker group
       user:
-        name: ubuntu
+        name: "{{ ansible_user }}"
         groups: docker
         append: yes
+      when: ansible_user is defined
     - name: Reset ssh connection to allow using of docker
       ansible.builtin.meta:
         reset_connection
-    - name: Check for docker-compose
-      stat:
-        path: /usr/bin/docker-compose
-      register: cs      
-    - name: Install docker-compose
-      shell: |
-        curl --tlsv1 -sSL -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose
-        chmod +x /usr/bin/docker-compose
-      when: cs.stat.exists == False
+    # - name: Check for docker-compose
+    #   stat:
+    #     path: /usr/bin/docker-compose
+    #   register: cs      
+    # - name: Install docker-compose
+    #   shell: |
+    #     curl --tlsv1 -sSL -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose
+    #     chmod +x /usr/bin/docker-compose
+    #   when: cs.stat.exists == False
     - name: Create /opt/onedata
       file:
         path: /opt/onedata
@@ -147,6 +159,7 @@
       apt:
         upgrade: yes
         only_upgrade: yes
+      when: ansible_distribution == "Ubuntu"
         
 
         
