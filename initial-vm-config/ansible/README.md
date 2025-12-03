@@ -10,10 +10,22 @@
 - jinja2 <3.10
 - jmespath  
 
-The requirements can be installed like the following:
+The recommened way is to use Python virtual environment, like below:
+
+#### Ubuntu
 ```
-sudo apt install -y python3 python3-pip
-sudo python3 -m pip install ansible "Jinja2>=2.10,<3.1" jmespath
+sudo apt update
+sudo apt install python3 python3-venv
+python3 -m venv ~/.vm-prep
+source ~/.vm-prep/bin/activate
+python3 -m pip install ansible "Jinja2>=2.10,<3.1" jmespath
+```
+
+#### Centos, Rocky
+```
+python3 -m venv ~/.vm-prep
+source ~/.vm-prep/bin/activate
+python3 -m pip install ansible "Jinja2>=2.10,<3.1" jmespath
 ```
 
 ## Configuring
@@ -41,5 +53,6 @@ or to use `ssh-agent`.
 ## Running the playbook
 
 ```
+source ~/.vm-prep/bin/activate   # make sure the python venv is activated
 ansible-playbook -i hosts site.yml
 ```

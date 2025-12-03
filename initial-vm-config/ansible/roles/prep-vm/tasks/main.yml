@@ -9,7 +9,7 @@
       delegate_facts: True
       when: hostvars[item]['ansible_default_ipv4'] is not defined
       with_items: "{{ groups['all'] }}"
-    - name: Install bind-utils, jq
+    - name: Install bind-utils, jq (Ubuntu)
       apt:
         update_cache: yes
         name:
@@ -18,15 +18,15 @@
           - curl
         state: present
       when: ansible_distribution == "Ubuntu"
-    - name: Install bind-utils, jq
+    - name: Install bind-utils, jq (Rocky)
       yum:
         name:
           - bind-utils
           - jq
           - curl
+          - lvm2
         state: present
-      when: ansible_distribution == "CentOS"
-      
+      when: ansible_distribution in ["CentOS", "Rocky"]      
     - name: Set max number of file
       lineinfile:
         regexp: soft nofile
@@ -47,14 +47,20 @@
         line: vm.swappiness=0
         state: present
         path: /etc/sysctl.d/50-swappiness.conf
+    - name: Check for THP
+      stat:
+        path: /sys/kernel/mm/transparent_hugepage/enabled
+      register: thp
     - name: copy disable-thp.service
       copy:
         src: disable-thp.service
         dest: /etc/systemd/system/disable-thp.service
+      when: thp.stat.exists == True
     - name: Enable disable-thp.service
       systemd:
         name: disable-thp
         state: started
+      when: thp.stat.exists == True
     - name: Set net.core.wmem_max
       sysctl:
         name: net.core.wmem_max
@@ -62,21 +68,34 @@
     - name: Set net.core.rmem_max
       sysctl:
         name: net.core.rmem_max
-        value: "16777216"       
+        value: "16777216"
     - name: Set kernel.unprivileged_userns_clone
       sysctl:
         name: kernel.unprivileged_userns_clone
-        value: "0"       
-    - name: Set hostname
+        value: "0"
+      when: ansible_distribution == "Ubuntu"
+    - name: Set hostname (multi nodes)
       hostname:
-        name: "{{ inventory_hostname }}.{{subdomain}}.{{ domain }}"
-    - name: Set FQDNs in /etc/hosts for all nodes
+        name: "{{ inventory_hostname }}.{{ domain }}"
+      when: multi_node_deployment
+    - name: Set hostname (single node)
+      hostname:
+        name: "{{ domain }}"
+      when: not multi_node_deployment
+    - name: Set FQDNs in /etc/hosts for all nodes (multi nodes)
       lineinfile:
         path: /etc/hosts
         regexp: "^{{ hostvars[item]['ansible_default_ipv4']['address'] }}"
-        line: "{{ hostvars[item]['ansible_default_ipv4']['address'] }} {{item}}.{{subdomain}}.{{domain}} {{item}}"
+        line: "{{ hostvars[item]['ansible_default_ipv4']['address'] }} {{item}}.{{domain}} {{item}}"
       with_items:
         - "{{groups['all']}}"
+      when: multi_node_deployment
+    - name: Set FQDNs in /etc/hosts for all nodes (single node)
+      lineinfile:
+        path: /etc/hosts
+        regexp: "^{{ ansible_default_ipv4['address'] }}"
+        line: "{{ ansible_default_ipv4['address'] }} {{domain}} {{ domain.split('.')[0] }}"
+      when: not multi_node_deployment
     - name: Disable resolvconf
       systemd:
         name: systemd-resolved
@@ -95,30 +114,26 @@
       stat:
         path: /usr/bin/docker
       register: ds
-    - name: Install docker
+    - name: Install docker (convenience script)
       shell: curl --tlsv1 -sSL https://get.docker.com/ | sh
-      when: ds.stat.exists == False
+      when: ds.stat.exists == False and ansible_distribution == "Ubuntu"
+    - name: Install docker (Rocky specific)
+      include_tasks: docker-rocky.yml
+      when: ansible_distribution == "Rocky"  
     - name: Start docker
       systemd:
         name: docker
+        enabled: yes
         state: started
-    - name: Add ubuntu user to the docker group
+    - name: Add current user to docker group
       user:
-        name: ubuntu
+        name: "{{ ansible_user }}"
         groups: docker
         append: yes
+      when: ansible_user is defined
     - name: Reset ssh connection to allow using of docker
       ansible.builtin.meta:
         reset_connection
-    - name: Check for docker-compose
-      stat:
-        path: /usr/bin/docker-compose
-      register: cs      
-    - name: Install docker-compose
-      shell: |
-        curl --tlsv1 -sSL -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` > /usr/bin/docker-compose
-        chmod +x /usr/bin/docker-compose
-      when: cs.stat.exists == False
     - name: Create /opt/onedata
       file:
         path: /opt/onedata
@@ -147,7 +162,4 @@
       apt:
         upgrade: yes
         only_upgrade: yes
-        
-
-        
-          
+      when: ansible_distribution == "Ubuntu"
