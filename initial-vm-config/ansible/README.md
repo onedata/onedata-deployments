@@ -10,8 +10,7 @@
 - jinja2 <3.10
 - jmespath  
 
-The recomended way to install the requirements is to do it in a dedicated Python virtual environment 
-using the commands below depending on the Linux distribution.
+The recommened way is to use Python virtual environment, like below:
 
 #### Ubuntu
 ```
@@ -54,5 +53,6 @@ or to use `ssh-agent`.
 ## Running the playbook
 
 ```
+source ~/.vm-prep/bin/activate   # make sure the python venv is activated
 ansible-playbook -i hosts site.yml
 ```
