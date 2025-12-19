@@ -30,13 +30,21 @@ In a specific case, all the three VMs can be the same one.
 - jmespath
 
 The requirements can be installed like the following:
+
+#### Ubuntu
 ```
 sudo apt update
-sudo apt install python3 pipx python3-pip python3-venv
-pipx ensurepath
-. ~/.bashrc
-pipx install --include-deps ansible
-ansible-galaxy collection install kubernetes.core
+sudo apt install python3 python3-venv
+python3 -m venv ~/.vm-prep
+source ~/.vm-prep/bin/activate
+python3 -m pip install ansible "Jinja2>=2.10,<3.1" jmespath
+```
+
+#### Centos, Rocky
+```
+python3 -m venv ~/.vm-prep
+source ~/.vm-prep/bin/activate
+python3 -m pip install ansible "Jinja2>=2.10,<3.1" jmespath
 ```
 
 > NOTE: The scripts has been tested with ansible 6.7.0 and ansible-core 2.13.13.
