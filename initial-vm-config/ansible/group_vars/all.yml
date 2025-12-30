@@ -1,8 +1,20 @@
-domain: onezone.onedata.org  # domain name
-subdomain: my-provider       # subdomain name
-                             # The FQDN of the node will be:
-                             #   {{inventory_hostname}}.{{subdomain}}.{{domain}}
-                             # inventory_hostname is the node name from the hosts file
+# The planned domain name of this Onezone/Oneprovider service; you should use
+# the same as in the service config to ensure a clean deployment.
+# NOTE: if you are deploying Oneprovider and using subdomain delegation, your service
+# will be assigned a subdomain in Onezone's domain, for example:
+# my-provider.onezone.onedata.org, where "my-provider" is the subdomain.
+# Regardless of which method you choose, put the **complete domain name** here.
+domain: provider.example.com
 
-disk_dev: /dev/sdd   # path to the disk dev for an LVM volume. The existing data will be lost!
-vg_name: onedata-vg  # LVM volume group name
+# Denotes if you are configuring more than one node for a multi-node
+# Onezone/Oneprovider deployment:
+#   false -> the node's FQDN will be set to "{{domain}}"
+#   true  -> the FQDN of each node will be set to "{{inventory_hostname}}.{{domain}}",
+#            where "{{inventory_hostname}}" is the name of the node in the "hosts" file
+multi_node_deployment: false
+
+# Path to the disk device for an LVM volume for service persistence. 
+# The existing data will be lost! Make sure you provide the right device.
+disk_dev: /dev/sdX      # e.g. /dev/sdb or /dev/vdb
+# LVM volume group name
+vg_name: onedata-vg

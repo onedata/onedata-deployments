@@ -3,8 +3,8 @@ version: '2'
 services:
   node1.onezone:
     restart: always
-    image: docker.onedata.org/onezone:25.0
-    hostname: node1.onezone.local
+    image: docker.onedata.org/onezone:ID-b3b62bbd18
+    hostname: node1.onezone.internal
     # dns: 8.8.8.8 # uncomment if container can't ping any domain
     container_name: onezone
     volumes:
@@ -15,9 +15,7 @@ services:
       - "./data/configs/overlay.config:/etc/oz_worker/overlay.config"
       # OpenID & SAML config
       - "./data/secret/auth.config:/etc/oz_worker/auth.config"
-      # Custom images used on the login page
-      - "./data/images/pracelab.svg:/var/www/html/oz_worker/custom/pracelab.svg"
-      - "./data/secret/mailer.config:/etc/oz_worker/config.d/mailer.config"
+      - "./data/images/eoscpl.svg:/var/www/html/oz_worker/custom/eoscpl.svg"
 
     ports:
       - "53:53"
@@ -51,7 +49,7 @@ services:
 
       ONEZONE_CONFIG: |
         cluster:
-          domainName: "onezone.local"
+          domainName: "onezone.internal"
           nodes:
             n1:
               hostname: "node1"
@@ -66,6 +64,6 @@ services:
             nodes:
               - "n1"
         onezone:
-          name: "DEMO"
-          domainName: "demo.onedata.org"
-          letsEncryptEnabled: true
+          name: "eosc pl"
+          domainName: "data.eosc.pl"
+          letsEncryptEnabled: false
