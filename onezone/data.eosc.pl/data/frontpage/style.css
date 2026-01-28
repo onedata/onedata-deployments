@@ -39,7 +39,7 @@ body {
 
 .lower-body-container {
   height: 50vh;
-  background-position: top;
+  background-position: top left;
   background-size: cover;
   background-repeat: no-repeat;
   background-image: url('./assets/eosc-background-lower.jpg?rev=1');
