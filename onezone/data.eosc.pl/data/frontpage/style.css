@@ -1,0 +1,428 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  --color-eoscpl-pink: #F39BB1;
+  --color-eoscpl-teal: #257B85;
+
+  --login-icon-size: 52px;
+  --color-feedback-warning: #FFC000;
+  --color-feedback-error: #FF000E;
+  --color-feedback-disabled: #E6E6E6;
+  --color-blue: #005FAA;
+  --color-orange: #EF8200;
+  --color-light-gray: #cbcbcb;
+  --color-dark-gray: #999999;
+  --color-body: #FFFFFF;
+  --secondary-font-size: 1.15em;
+
+  background-color: var(--color-eoscpl-teal);
+  background-size: cover;
+  color: var(--color-body);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 17px;
+}
+
+.upper-body-container {
+  display: flex;
+  align-items: flex-end;
+  height: 50vh;
+  background-position: bottom;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url('./assets/eosc-background-upper.jpg?rev=1');
+}
+
+.lower-body-container {
+  height: 50vh;
+  background-position: top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url('./assets/eosc-background-lower.jpg?rev=1');
+}
+
+.top-logos-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 300px;
+  background-color: #fff;
+  width: 100%;
+}
+
+
+.body-part-container {
+  padding-left: 190px;
+  padding-right: 190px;
+}
+
+.lower-body-container {
+  padding-bottom: 66px;
+  padding-top: 60px;
+}
+
+.onedata-logo {
+  height: 40px;
+  margin: 1.5% 0;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('./assets/logo-onedata.svg?rev=1');
+}
+
+.eoscpl-logo {
+  height: 120px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('./assets/eosc-node-poland-logo.png?rev=1');
+  background-position-y: center;
+}
+
+
+@media (max-width: 1366px) {
+  .body-part-container {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+}
+
+@media (max-width: 1068px) {
+  .top-logos-container {
+    height: 200px;
+  }
+  .body-part-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  .onedata-logo {
+    height: 30px;
+  }
+  .eoscpl-logo {
+    height: 90px;
+  }
+  .upper-body-container {
+    height: 40vh;
+  }
+  .lower-body-container {
+    height: 60vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .body-part-container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .upper-body-container {
+    height: 30vh;
+  }
+  .lower-body-container {
+    height: 70vh;
+  }
+}
+
+@media (max-width: 428px) {
+  .top-logos-container {
+    height: 200px;
+  }
+  .body-part-container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  body {
+    font-size: 16px;
+  }
+}
+
+body, html {
+  position: relative;
+  height: 100%;
+}
+
+body, input, button {
+  font-family: 'Quicksand';
+}
+
+button {
+  cursor: pointer;
+}
+
+h1 {
+  font-size: 2.8em;
+}
+
+h2 {
+  font-size: var(--secondary-font-size);
+}
+
+.sign-in-header {
+  margin-top: 0;
+  margin-bottom: 14px;
+}
+
+.sign-in-subheader {
+  font-weight: 400;
+  margin-top: 0;
+  margin-bottom: 18px;
+}
+
+#login-buttons-container.eoscpl-login-buttons-container {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.login-form-container {
+  padding-top: 10px;
+}
+
+.login-form-container input {
+  font-size: var(--secondary-font-size);
+  display: block;
+  width: 446px;
+  max-width: 100%;
+  height: var(--login-icon-size);
+  max-height: var(--login-icon-size);
+  border-radius: 1000px;
+  border: 0;
+  padding: 0 20px;
+}
+
+.login-form-container input.has-error {
+  border: 2px solid var(--color-feedback-error);
+  border-collapse: collapse;
+}
+
+.login-form-container input:disabled {
+  background-color: var(--color-feedback-disabled);
+}
+
+.login-form-container #password-input {
+  margin-top: 10px;
+}
+
+.login-form-error-container {
+  margin-top: 0.5em;
+  color: var(--color-feedback-warning);
+}
+
+.login-form-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 1000px;
+  border: 2px solid;
+  font-size: var(--secondary-font-size);
+  height: var(--login-icon-size);
+  padding-left: 22px;
+  padding-right: 22px;
+}
+
+button.loading .button-spinner {
+  display: block;
+}
+
+.button-spinner {
+  /* hidden by default - use button.loading class to show */
+  display: none;
+  background-image: url('./assets/spinner.svg?rev=1');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 1em;
+  margin-left: -0.2em;
+  margin-right: 0.6em;
+  width: 1em;
+}
+
+.back-btn {
+  color: black;
+  background-color: white;
+  border-color: var(--color-eoscpl-pink);
+  padding-left: 18px;
+  padding-right: 26px;
+}
+
+.back-btn:hover {
+  background-color: hsl(345, 79%, 92%)
+}
+
+.sign-in-btn {
+  color: black;
+  background-color: var(--color-eoscpl-pink);
+  border-color: var(--color-eoscpl-pink);
+}
+
+.sign-in-btn:hover {
+  background-color: hsl(345, 79%, 68%);
+  border-color: hsl(345, 79%, 68%);
+}
+
+.login-form-button:disabled {
+  background-color: var(--color-dark-gray) !important;
+  color: var(--color-feedback-disabled);
+  cursor: not-allowed;
+}
+
+.login-message-container {
+  font-size: 1em;
+  font-weight: 400;
+  margin-top: auto;
+  padding-top: var(--secondary-font-size);
+  overflow: auto;
+}
+
+.login-message-container br {
+  margin-bottom: 0.4em;
+  display: block;
+  content: " ";
+}
+
+.login-message-container {
+  max-width: 83vh;
+  min-width: 320px;
+}
+
+@media (max-height: 850px) {
+  .login-message-container {
+    max-width: none;
+    min-width: auto;
+  }
+}
+
+.login-notification + .login-notification {
+  padding-top: 0.5em;
+  margin-top: 0.5em;
+  border-top: 1px solid var(--color-feedback-disabled);
+}
+
+.login-notification-warning {
+  color: var(--color-feedback-warning);
+}
+
+.eoscpl-frontpage h1 {
+  font-size: 2.1em;
+}
+
+.eoscpl-frontpage .login-icon-box {
+  position: relative;
+  display: block;
+  overflow: visible;
+  width: 404px;
+  max-width: 100%;
+  height: 72px;
+  /* radius virtually infinite (to achieve fully-rounded corners of rectcangle) */
+  border-radius: 1000px;
+  border-style: solid;
+  border-width: 2px;
+  text-align: center;
+  text-decoration: none !important;
+  user-select: none;
+  cursor: pointer;
+  text-wrap: nowrap;
+  overflow: hidden;
+  padding-right: 20px;
+}
+
+.eoscpl-frontpage .auth-icon-image {
+  width: 100%;
+  height: 100%;
+  background-size: var(--login-icon-size) var(--login-icon-size);
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: 28px;
+  /* labels */
+  display: flex;
+  align-items: center;
+  padding-left: 100px;
+  font-size: var(--secondary-font-size);
+  font-weight: 700;
+  overflow: hidden;
+}
+
+/* specific button styles, as the DOM structure makes it hard to get horizontal center */
+/* .eoscpl-frontpage .accessEoscPl .auth-icon-image {
+  padding-left: 94px;
+  background-position-x: 26px;
+}
+.eoscpl-frontpage .accessEoscPl .login-icon-spinner {
+  background-position-x: 30px;
+} */
+
+@media (max-width: 460px) {
+  .eoscpl-frontpage .auth-icon-image {
+    font-size: 1.05em;
+    background-size: 44px;
+    background-position-x: 22px;
+    padding-left: 84px;
+  }
+  .eoscpl-frontpage .accessEoscPl .auth-icon-image {
+    padding-left: 84px;
+  }
+  .eoscpl-frontpage .basicAuth .auth-icon-image {
+    padding-left: 92px;
+  }
+}
+
+.eoscpl-frontpage .auth-icon-image.hidden {
+  display: flex !important;
+  position: absolute;
+  background-image: none !important;
+}
+
+.login-icon-spinner {
+  background-image: url('./assets/spinner.svg?rev=1769608918601');
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  background-position-y: center;
+  background-position-x: 30px;
+  background-size: 36px;
+  background-repeat: no-repeat;
+  margin: 5px;
+}
+
+.login-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5em;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  margin-bottom: 1em;
+  margin-right: 2em;
+  color: var(--color-light-gray);
+}
+
+/* emipirical size of largest footer */
+@media (max-width: 480px) {
+  .login-footer {
+    margin-right: 1em;
+    margin-left: 0;
+    margin-bottom: 0.5em;
+    font-size: 95%;
+    min-width: 360px;
+  }
+}
+
+.footer-link {
+  color: var(--color-eoscpl-pink);
+}
+
+.footer-separator {
+  opacity: 0.6;
+}
+
+.one-hidden {
+  display: none !important;
+}

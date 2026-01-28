@@ -1,0 +1,43 @@
+<!--
+Note, that this template is somehow hacky, because it was created to change
+standard messages, button look etc. after the main integration script has been released.
+It uses additional JavaScript code in ./assets/customize.js that changes how the standard
+frontpage works. If you want to create traditional frontpage, look at egi-datahub
+template.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css?rev=1769612734474">
+</head>
+<body class="eoscpl-frontpage">
+  <div class="upper-body-container">
+    <div class="body-part-container top-logos-container">
+      <div class="onedata-logo"></div>
+      <div class="eoscpl-logo"></div>
+    </div>
+  </div>
+  <div class="body-part-container lower-body-container">
+    <!-- components that will be replaced by Onedata app -->
+    <h1 id="sign-in-header" class="one-hidden"></h1>
+    <h1 class="sign-in-header">Welcome</h1>
+    <h2 id="sign-in-subheader" class="one-hidden"></h2>
+    <div
+      id="login-buttons-container"
+      class="login-buttons-container eoscpl-login-buttons-container one-hidden"
+    ></div>
+    <div id="login-form-container" class="login-form-container"></div>
+    <div id="login-error-container" class="login-error-container"></div>
+    <div id="login-message-container" class="login-message-container"></div>
+    <div id="footer" class="footer"></div>
+  </div>
+
+  <script src="./assets/customize.js?rev=1769612723014"></script>
+</body>
+</html>

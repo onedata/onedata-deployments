@@ -3,7 +3,7 @@ version: '2'
 services:
   node1.onezone:
     restart: always
-    image: docker.onedata.org/onezone:ID-b3b62bbd18
+    image: docker.onedata.org/onezone:ID-8d1cb623aa
     hostname: node1.onezone.internal
     # dns: 8.8.8.8 # uncomment if container can't ping any domain
     container_name: onezone
@@ -16,6 +16,8 @@ services:
       # OpenID & SAML config
       - "./data/secret/auth.config:/etc/oz_worker/auth.config"
       - "./data/images/eoscpl.svg:/var/www/html/oz_worker/custom/eoscpl.svg"
+      # Custom frontpage
+      - "./data/frontpage:/var/www/html/oz_worker/custom/frontpage"
 
     ports:
       - "53:53"
