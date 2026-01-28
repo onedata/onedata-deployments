@@ -31,7 +31,7 @@ body {
   display: flex;
   align-items: flex-end;
   height: 50vh;
-  background-position: bottom;
+  background-position: bottom left;
   background-size: cover;
   background-repeat: no-repeat;
   background-image: url('./assets/eosc-background-upper.jpg?rev=1');
