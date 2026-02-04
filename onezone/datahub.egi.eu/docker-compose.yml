@@ -3,7 +3,7 @@ version: '2'
 services:
   node1.onezone:
     restart: always
-    image: docker.onedata.org/onezone:21.02.8-gs-patch
+    image: onedata/onezone:25
     network_mode: host
     container_name: onezone
     volumes:
