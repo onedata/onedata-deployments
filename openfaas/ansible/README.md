@@ -19,12 +19,12 @@ In a specific case, all the three VMs can be the same one.
 
 ## Prerequisites
 - ssh access from ansible-vm to openfaas-vm and oneprovider-vm
-- python3 on all VMs
+- **python3.9 or newer** on all VMs
 - oneprovider version >= 21.02.5
 
 ### ansible-vm
 - Ubuntu 20.04 or higher
-- python3
+- **python3.9 or newer**
 - ansible >=2.8.4
 - jinja2 <3.10
 - jmespath
