@@ -1,5 +1,8 @@
 # Manual preparation of the Oneprovider node 
 
+NOTE: we strongly recommend using the [ansible playbook](../ansible) 
+that captures all steps described in this chapter.
+
 In order to ensure optimum performance of the Oneprovider service,
 several low-level settings need to be tuned on the host machine. This applies
 to both Docker based and package based installations, in particular to
