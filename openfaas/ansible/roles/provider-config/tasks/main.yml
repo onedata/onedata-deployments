@@ -40,5 +40,6 @@ A short service downtime will ensue. Do you wish to continue? (yes/no)"
 - name: Restart oneprovider
   become: yes 
   shell: onedatify restart
-  when: not out.found and confirm_restart.user_input | bool
-
+  when: 
+    - not out.found
+    - confirm_restart.user_input | lower in ['y', 'yes']
