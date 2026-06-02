@@ -11,7 +11,7 @@ picked up by nginx without restarting the docker.
 
 """
 __author__ = "Lukasz Opiola"
-__copyright__ = "Copyright (C) 2019-2020 ACK CYFRONET AGH"
+__copyright__ = "Copyright (C) 2019-2020 ACK CYFRONET AGH, Copyright (C) 2026 Onedata (onedata.org)"
 __license__ = "This software is released under the MIT license cited in " \
               "LICENSE.txt"
 
@@ -28,7 +28,7 @@ DOCKER_IMAGE_FILE_NAME = 'homepage-docker-image.conf'
 DOCKER_IMAGE_FILE_PATH = os.path.join(SCRIPT_DIR, DOCKER_IMAGE_FILE_NAME)
 DOCKER_IMAGE_REGEX = re.compile('[a-z0-9]+(?:[._-]{1,2}[a-z0-9]+)*')
 ARTIFACT_PATH = '/artefact'
-STATIC_FILES_OUTPUT_PATH = './persistence/html'
+STATIC_FILES_OUTPUT_PATH = os.path.join(SCRIPT_DIR, 'persistence/html')
 
 DOCKER_IMAGE_EXAMPLE = 'docker.onedata.org/homepage:ID-c104a634b4'
 
