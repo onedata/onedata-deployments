@@ -13,12 +13,13 @@ services:
       - ./persistence/certbot/conf:/etc/letsencrypt
       - ./persistence/certbot/www:/var/www/certbot
       - ./persistence/html:/var/www/html
+      - ./secret/mail-to-lo.html:/var/www/html/mail-to-lo.html
     ports:
       - "80:80"
       - "443:443"
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
   certbot:
-    image: certbot/certbot
+    image: certbot/certbot:v5.6.0
     restart: unless-stopped
     volumes:
       - ./persistence/certbot/conf:/etc/letsencrypt
