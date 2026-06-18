@@ -10,7 +10,7 @@ fi
 
 domains=(onedata.org www.onedata.org docs.onedata.org)
 rsa_key_size=4096
-data_path="./data/certbot"
+data_path="./persistence/certbot"
 email="info@onedata.org"
 staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
@@ -25,8 +25,8 @@ fi
 if [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || [ ! -e "$data_path/conf/ssl-dhparams.pem" ]; then
   echo "### Downloading recommended TLS parameters ..."
   mkdir -p "$data_path/conf"
-  curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/options-ssl-nginx.conf > "$data_path/conf/options-ssl-nginx.conf"
-  curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot/ssl-dhparams.pem > "$data_path/conf/ssl-dhparams.pem"
+  curl -sf https://raw.githubusercontent.com/certbot/certbot/main/certbot/src/certbot/_internal/plugins/nginx/tls_configs/options-ssl-nginx.conf > "$data_path/conf/options-ssl-nginx.conf" || { echo "Error: failed to download options-ssl-nginx.conf" >&2; exit 1; }
+  curl -sf https://raw.githubusercontent.com/certbot/certbot/main/certbot/src/certbot/ssl-dhparams.pem > "$data_path/conf/ssl-dhparams.pem" || { echo "Error: failed to download ssl-dhparams.pem" >&2; exit 1; }
   echo
 fi
 

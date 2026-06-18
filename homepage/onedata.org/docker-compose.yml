@@ -5,20 +5,20 @@ version: '3'
 
 services:
   nginx:
-    image: nginx:1.15-alpine
+    image: nginx:1.27.5-alpine
     restart: unless-stopped
     volumes:
       - ./config/nginx.conf:/etc/nginx/conf.d/app.conf:ro
-      - ./secret/training.htpasswd:/etc/nginx/training.htpasswd:ro
       - ./persistence/certbot/conf:/etc/letsencrypt
       - ./persistence/certbot/www:/var/www/certbot
       - ./persistence/html:/var/www/html
+      - ./secret/mail-to-lo.html:/var/www/html/mail-to-lo.html
     ports:
       - "80:80"
       - "443:443"
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
   certbot:
-    image: certbot/certbot
+    image: certbot/certbot:v5.6.0
     restart: unless-stopped
     volumes:
       - ./persistence/certbot/conf:/etc/letsencrypt

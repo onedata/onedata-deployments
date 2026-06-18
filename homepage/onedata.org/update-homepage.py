@@ -84,7 +84,6 @@ def deploy_static_files_from_docker(docker):
         'rsync', '-ah', '--delete',
         '--exclude=/.gitkeep', 
         '--exclude=/training',
-        '--exclude=/mail-to-lo.html',
         ensure_trailing_slash(artifact_copy_on_host), 
         ensure_trailing_slash(STATIC_FILES_OUTPUT_PATH)
     ]
