@@ -5,7 +5,7 @@ version: '3'
 
 services:
   nginx:
-    image: nginx:1.15-alpine
+    image: nginx:1.27.5-alpine
     restart: unless-stopped
     volumes:
       - ./config/nginx.conf:/etc/nginx/conf.d/app.conf:ro
