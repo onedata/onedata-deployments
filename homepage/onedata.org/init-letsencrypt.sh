@@ -10,7 +10,7 @@ fi
 
 domains=(onedata.org www.onedata.org docs.onedata.org)
 rsa_key_size=4096
-data_path="./data/certbot"
+data_path="./persistence/certbot"
 email="info@onedata.org"
 staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
