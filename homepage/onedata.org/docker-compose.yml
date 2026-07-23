@@ -13,10 +13,23 @@ services:
       - ./persistence/certbot/www:/var/www/certbot
       - ./persistence/html:/var/www/html
       - ./secret/mail-to-lo.html:/var/www/html/mail-to-lo.html
+      - sockets:/var/run/sockets
     ports:
       - "80:80"
       - "443:443"
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    command: "/bin/sh -c 'mkdir -p /var/run/sockets && chmod 777 /var/run/sockets && while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  book-demo-server:
+    image: onedata/homepage-book-demo-server:v1
+    restart: unless-stopped
+    env_file:
+      - ./secret/book-demo-server.env
+    environment:
+      - NODE_ENV=production
+      - SOCKET_PATH=/var/run/sockets/book-demo.sock
+      - GOOGLE_SERVICE_ACCOUNT_KEY_FILE=/app/secret/google-service-account.json
+    volumes:
+      - sockets:/var/run/sockets
+      - ./secret/google-service-account.json:/app/secret/google-service-account.json:ro
   certbot:
     image: certbot/certbot:v5.6.0
     restart: unless-stopped
@@ -24,3 +37,6 @@ services:
       - ./persistence/certbot/conf:/etc/letsencrypt
       - ./persistence/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+volumes:
+  sockets:
