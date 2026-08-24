@@ -19,7 +19,7 @@ services:
       - "443:443"
     command: "/bin/sh -c 'mkdir -p /var/run/sockets && chmod 777 /var/run/sockets && while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
   book-demo-server:
-    image: onedata/homepage-book-demo-server:v1
+    image: onedata/homepage-book-demo-server:v2
     restart: unless-stopped
     env_file:
       - ./secret/book-demo-server.env
