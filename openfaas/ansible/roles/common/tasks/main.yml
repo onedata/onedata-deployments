@@ -8,10 +8,11 @@
     - name: Install docker
       shell: curl --tlsv1 -sSL https://get.docker.com/ | sh
       when: ds.stat.exists == False
-    - name: Start docker
+    - name: Start docker and ensure it starts on boot
       systemd:
         name: docker
         state: started
+        enabled: true
     - name: Ensure group "docker" exists 
       ansible.builtin.group:
         name: docker
@@ -68,6 +69,15 @@
 - name: Create kind cluster if not already existent
   shell: "kind create cluster --config=kind-config.yaml"
   when: not kind_output.stdout | regex_search(kind_cluster_name)
+
+- name: Get kind node containers
+  command: "kind get nodes --name {{ kind_cluster_name }}"
+  register: kind_nodes
+  changed_when: false
+
+- name: Set restart policy to unless-stopped on kind nodes
+  command: "docker update --restart unless-stopped {{ kind_nodes.stdout_lines | join(' ') }}"
+  changed_when: false
 
 - name: Check ClusterRoleBinding existence
   shell: kubectl get clusterrolebinding serviceaccounts-cluster-admin -o json
